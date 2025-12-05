@@ -1,0 +1,22 @@
+from logging import Formatter
+from typing import Any
+
+from gunicorn.glogging import Logger
+
+from core.config import settings
+
+
+class GunicornLogger(Logger):  # type: ignore
+    def setup(self, cfg: Any) -> None:
+        super().setup(cfg)
+
+        self._set_handler(
+            log=self.access_log,
+            output=cfg.accesslog,
+            fmt=Formatter(fmt=settings.logging.log_format),
+        )
+        self._set_handler(
+            log=self.error_log,
+            output=cfg.errorlog,
+            fmt=Formatter(fmt=settings.logging.log_format),
+        )
