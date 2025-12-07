@@ -46,6 +46,9 @@ class Logging[RendererType]:
 
     @classmethod
     def get_processors(cls) -> list[Any]:
+        if not settings.debug:
+            cls.shared_processors.append(structlog.processors.format_exc_info)
+
         return [
             *cls.shared_processors,
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
@@ -66,6 +69,15 @@ class Logging[RendererType]:
                 "formatter": "myLogger",
             },
         }
+
+        if not settings.debug:
+            log_handlers["file"] = {
+                "level": level,
+                "class": "logging.FileHandler",
+                "filename": settings.logging.log_filename,
+                "formatter": "myLogger",
+                "encoding": "utf-8",
+            }
 
         logging.config.dictConfig(
             {
@@ -117,6 +129,12 @@ class Logging[RendererType]:
         cls.configure_structlog()
 
 
+class Development(Logging[structlog.dev.ConsoleRenderer]):
+    @classmethod
+    def get_renderer(cls) -> structlog.dev.ConsoleRenderer:
+        return structlog.dev.ConsoleRenderer(colors=True)
+
+
 class Production(Logging[structlog.processors.JSONRenderer]):
     @classmethod
     def get_renderer(cls) -> structlog.processors.JSONRenderer:
@@ -124,7 +142,10 @@ class Production(Logging[structlog.processors.JSONRenderer]):
 
 
 def configure() -> None:
-    Production.configure()
+    if settings.debug:
+        Development.configure()
+    else:
+        Production.configure()
 
 
 def generate_correlation_id() -> str:
