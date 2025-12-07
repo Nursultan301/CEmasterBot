@@ -6,6 +6,7 @@ from core.exceptions.handlers import register_exception_handlers
 from core.middlewares import LogCorrelationIdMiddleware
 from core.structlog import configure as logging_configure
 from create_app import FastAPIApp
+from interfaces import router
 
 logging_configure()
 
@@ -28,6 +29,8 @@ main_app.add_middleware(
 )
 
 register_exception_handlers(main_app)
+
+main_app.include_router(router)
 
 
 if __name__ == "__main__":

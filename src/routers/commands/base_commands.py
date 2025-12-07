@@ -3,7 +3,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.utils import markdown
 
-from src.keyboards.common_keyboards import (
+from keyboards.common_keyboards import (
     ButtonText,
     get_on_start_kb,
 )

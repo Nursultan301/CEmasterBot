@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from src.routers import router as main_router
+from routers import router as main_router
 
 
 dispatcher = Dispatcher()

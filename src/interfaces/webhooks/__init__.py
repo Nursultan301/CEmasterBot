@@ -1,15 +1,15 @@
 from fastapi import APIRouter
 
-from core.config import settings
 
-from .telegram import router as telegram_router
+from interfaces.webhooks.telegram import router as telegram_router
+from interfaces.api_prefix import api_prefix
 
 router = APIRouter(
-    prefix=settings.webhook.prefix,
+    prefix=api_prefix.webhook.prefix,
 )
 
 
 router.include_router(
     telegram_router,
-    prefix=settings.webhook.telegram,
+    prefix=api_prefix.webhook.telegram,
 )
