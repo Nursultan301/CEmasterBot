@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     debug: bool
     allow_origins: list[str]
     bot_token: str
+    current_site_url: str
 
     admin_ids: frozenset[int] = frozenset({42, 3595399})
     run: RunConfig = RunConfig()
