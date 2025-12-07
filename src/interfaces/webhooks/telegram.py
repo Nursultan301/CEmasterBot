@@ -6,15 +6,12 @@ from fastapi import APIRouter, Request, status
 from app import dispatcher
 from schemas.base import SuccessResponse
 
+from interfaces.tmp_data import api_service
+
+
 router = APIRouter(
     tags=["Webhook Telegram"],
 )
-
-api_service = {
-    "uuid": "9ye78r7845y784475",
-    "name": "CEmasterBot",
-    "token": "7787122283:AAHILH2FDJiJROBNURkXIphhI_qDEcc7jcc",
-}
 
 
 @router.post(
