@@ -2,6 +2,6 @@ from aiogram import Dispatcher
 from routers import router as main_router
 
 
-dispatcher = Dispatcher()
+dp = Dispatcher()
 
-dispatcher.include_routers(main_router)
+dp.include_routers(main_router)
