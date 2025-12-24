@@ -14,11 +14,11 @@ class LogCorrelationIdMiddleware:
 
         structlog.contextvars.bind_contextvars(
             correlation_id=generate_correlation_id(),
-            method=scope["method"],
-            path=scope["path"],
         )
 
         await self.app(scope, receive, send)
 
-        structlog.contextvars.unbind_contextvars("correlation_id", "method", "path")
+        structlog.contextvars.unbind_contextvars(
+            "correlation_id",
+        )
         return None
