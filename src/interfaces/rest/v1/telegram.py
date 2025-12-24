@@ -17,7 +17,7 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
 )
 async def get_telegram_service(data: TelegramSchema) -> SuccessResponse:
-    url = f"{settings.current_site_url}{api_prefix.webhook.prefix}{api_prefix.webhook.telegram}/{data.uuid}/"
+    url = f"{settings.current_site_url}{api_prefix.webhook.prefix}{api_prefix.webhook.telegram}/{data.organization_id}/"
     try:
         bot = Bot(token=data.token)
         response = await bot.set_webhook(url=url)

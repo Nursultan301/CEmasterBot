@@ -4,5 +4,5 @@ from pydantic import BaseModel
 
 
 class TelegramSchema(BaseModel):
-    uuid: uuid.UUID
+    organization_id: uuid.UUID
     token: str
