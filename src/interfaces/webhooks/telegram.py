@@ -1,12 +1,12 @@
 import logging
+import uuid
 
 from aiogram import Bot, types
 from fastapi import APIRouter, Request, status
 
 from dispatcher import dp
+from infrastructures.http.client import OrganizationAPIClient
 from schemas.base import SuccessResponse
-
-from interfaces.tmp_data import api_service
 
 
 router = APIRouter(
@@ -15,16 +15,19 @@ router = APIRouter(
 
 
 @router.post(
-    "/{telegram_id}/",
+    "/{organization_id}/",
     response_model=SuccessResponse,
     status_code=status.HTTP_200_OK,
 )
 async def telegram_webhook(
-    telegram_id: str,
+    organization_id: uuid.UUID,
     request: Request,
 ) -> SuccessResponse:
     try:
-        bot = Bot(token=api_service.get("token"))
+        http = OrganizationAPIClient()
+        telegram_token = await http.get_token(organization_id=organization_id)
+
+        bot = Bot(token=telegram_token)
         request_data = await request.json()
         await dp.feed_update(bot, types.Update(**request_data))
 

@@ -9,21 +9,36 @@ class SuccessResponse(BaseModel):
     detail: str
 
 
-class DataResponse(BaseModel):
+class ErrorResponse(BaseModel):
+    exception_type: Literal[
+        "server_error",
+        "validation_error",
+        "client_error",
+    ]
+    errors: list["ErrorDetail"]
+
+
+class ErrorDetail(BaseModel):
+    error_code: str | None = None
+    detail: str | None = None
+    attr: str | None = None
+
+
+class BaseResponse(BaseModel):
     object: Literal[
         "list",
-        "me",
-        "user",
-        "project",
+        "object",
     ]
 
 
-class DataDetailResponse[T](DataResponse):
-    data: T
+class ResponsePayload[T](BaseResponse):
+    object: Literal["object"] = "object"
+    result: T
 
 
-class DataListResponse[T](DataResponse):
-    data: list[T]
+class ResponseListPayload[T](BaseResponse):
+    object: Literal["list"] = "list"
+    results: list[T]
 
 
 @dataclass
