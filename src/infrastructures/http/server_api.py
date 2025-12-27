@@ -4,6 +4,7 @@ from typing import final
 import httpx
 
 from infrastructures.http.organization_api import OrganizationAPI
+from infrastructures.http.client_api import ClientAPI
 
 
 @final
@@ -14,3 +15,7 @@ class ServerAPI:
     @property
     def organization(self) -> OrganizationAPI:
         return OrganizationAPI(http=self.http)
+
+    @property
+    def client(self) -> ClientAPI:
+        return ClientAPI(http=self.http)
