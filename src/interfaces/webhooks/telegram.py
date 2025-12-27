@@ -58,6 +58,7 @@ async def telegram_webhook(
             update=update,
             organization_id=organization_id,
             client=client,
+            server_api=server_api,
         )
 
     except Exception as e:
