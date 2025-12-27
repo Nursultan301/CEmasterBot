@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Final, final, TypeVar, Generic
+from typing import TypeVar
 
 import httpx
 import structlog
 
-from core.config import settings
 from core.structlog import Logger
-from infrastructures.http.exceptions import ClientNotFoundException
-from schemas.base import ResponsePayload
+from enums.commons import ClientCodeTypeEnum
+from schemas.base import ResponsePayload, ErrorResponse
 from schemas.client import ClientInfoSchema, ClientCreateSchema
 
 logger: Logger = structlog.get_logger(__name__)
@@ -23,7 +21,7 @@ class ClientAPI:
     def __init__(self, http: httpx.AsyncClient) -> None:
         self.http = http
 
-    async def get_me(self, chat_id: int) -> ClientInfoSchema:
+    async def get_me(self, chat_id: int) -> ClientInfoSchema | None:
         try:
             response = await self.http.get(
                 "/clients/me/",
@@ -34,39 +32,60 @@ class ClientAPI:
             return payload.result
 
         except httpx.HTTPStatusError as exc:
-            logger.warning(
+            errors = ErrorResponse(**exc.response.json())
+            logger.error(
                 "Client API request failed",
                 status_code=exc.response.status_code,
-                response_text=exc.response.text[:500],
+                exception_type=errors.exception_type,
+                errors=errors.errors,
             )
-            raise ClientNotFoundException(
-                f"Client API error: HTTP {exc.response.status_code}"
-            ) from exc
 
         except httpx.RequestError as exc:
             logger.warning("Client API is unavailable", error=str(exc))
-            raise RuntimeError("Client API is unavailable") from exc
 
-    async def create(self, client_data: ClientCreateSchema) -> ClientInfoSchema:
+    async def create(self, client_data: ClientCreateSchema) -> ClientInfoSchema | None:
         try:
             response = await self.http.post(
                 "/clients/registration/",
-                json=client_data.model_dump(),
+                content=client_data.model_dump_json(),
             )
             response.raise_for_status()
             payload = ResponsePayload[ClientInfoSchema](**response.json())
             return payload.result
 
         except httpx.HTTPStatusError as exc:
-            logger.warning(
+            errors = ErrorResponse(**exc.response.json())
+            logger.error(
                 "Client API request failed",
                 status_code=exc.response.status_code,
-                response_text=exc.response.text[:500],
+                exception_type=errors.exception_type,
+                errors=errors.errors,
             )
-            raise ClientNotFoundException(
-                f"Client API error: HTTP {exc.response.status_code}"
-            ) from exc
 
         except httpx.RequestError as exc:
             logger.warning("Client API is unavailable", error=str(exc))
-            raise RuntimeError("Client API is unavailable") from exc
+
+    async def generate_code(
+        self,
+        chat_id: int,
+        type_client_code: ClientCodeTypeEnum,
+    ) -> ClientInfoSchema | None:
+        try:
+            response = await self.http.post(
+                "/clients/generate/client-code/",
+                headers={"x-data-chat-id": str(chat_id)},
+                json={
+                    "type_client_code": type_client_code,
+                },
+            )
+            response.raise_for_status()
+            payload = ResponsePayload[ClientInfoSchema](**response.json())
+            return payload.result
+        except httpx.HTTPStatusError as exc:
+            logger.error(
+                "Client API request failed",
+                status_code=exc.response.status_code,
+                errors=exc.response.json(),
+            )
+        except httpx.RequestError as exc:
+            logger.warning("Client API is unavailable", error=str(exc))
