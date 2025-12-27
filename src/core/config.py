@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR: Path = Path(__file__).parent.parent.parent
@@ -35,9 +35,20 @@ class LoggingConfig(BaseModel):
     log_format: str = LOG_DEFAULT_FORMAT
 
 
+class RedisConfig(BaseModel):
+    host: str
+    port: str
+    broker_url: str | None = Field(default=None)
+
+    @model_validator(mode="after")
+    def set_broker_url(self) -> "RedisConfig":
+        self.broker_url = f"redis://{self.host}:{self.port}"
+        return self
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR / '.env'}",
+        env_file=(f"{BASE_DIR / '.env.template'}", f"{BASE_DIR / '.env'}"),
         case_sensitive=False,
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
@@ -46,6 +57,7 @@ class Settings(BaseSettings):
     allow_origins: list[str]
     current_site_url: str
     server_site_url: str
+    redis: RedisConfig
 
     admin_ids: frozenset[int] = frozenset({42, 3595399})
     run: RunConfig = RunConfig()

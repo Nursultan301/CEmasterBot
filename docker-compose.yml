@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  ce_master_bot:
+    container_name: ce_master_bot
+    build: .
+    volumes:
+      - ./:/project
+    ports:
+      - "8078:8000"
+    depends_on:
+      ce_bot_redis:
+        condition: service_healthy
+
+  ce_bot_redis:
+    image: redis:8.2-alpine
+    container_name: ce_bot_redis
+    hostname: redis
+    ports:
+      - "6317:6379"
+    restart: unless-stopped
+    volumes:
+        - ce_bot_redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
+volumes:
+  ce_bot_redis_data:
+    driver: local
