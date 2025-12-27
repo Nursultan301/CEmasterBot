@@ -1,12 +1,14 @@
-from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Any
 
+from redis.asyncio import Redis
+import httpx
 import structlog
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
+from core.config import settings
 from core.structlog import Logger
+from infrastructures.http.server_api import ServerAPI
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -14,8 +16,32 @@ logger: Logger = structlog.get_logger(__name__)
 class FastAPIApp(FastAPI):
     @staticmethod
     @asynccontextmanager
-    async def lifespan(_: FastAPI) -> AsyncGenerator[None, Any]:
-        yield
+    async def lifespan(app: FastAPI):
+        app.state.http_client = httpx.AsyncClient(
+            base_url=f"{settings.server_site_url}/api/v1",
+            timeout=httpx.Timeout(connect=3.0, read=10.0, write=10.0, pool=5.0),
+            limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+        )
+        app.state.server = ServerAPI(http=app.state.http_client)
+
+        # Redis
+        app.state.redis = Redis.from_url(
+            settings.redis.broker_url,
+            decode_responses=True,
+        )
+        app.state.bot_cache = {}
+
+        try:
+            yield
+        finally:
+            # закрываем ботов
+            for bot in app.state.bot_cache.values():
+                await bot.session.close()
+
+            await app.state.http_client.aclose()
+            await app.state.redis.aclose()
+
+    app = FastAPI(lifespan=lifespan)
 
     def create(
         self,
