@@ -2,16 +2,30 @@ import logging
 import uuid
 
 from aiogram import Bot, types
+from aiogram.types import Update
 from fastapi import APIRouter, Request, status
 
 from dispatcher import dp
-from infrastructures.http.client import OrganizationAPIClient
+from infrastructures.cache.bot_cache import get_bot_cached
+from infrastructures.cache.token_cache import get_token_cached
+from infrastructures.http.client_api import ClientAPI
+from infrastructures.http.exceptions import ClientNotFoundException
+from infrastructures.http.organization_api import OrganizationAPI
+from infrastructures.http.server_api import ServerAPI
 from schemas.base import SuccessResponse
 
 
 router = APIRouter(
     tags=["Webhook Telegram"],
 )
+
+
+def extract_chat_id(update: Update) -> int | None:
+    if update.message:
+        return update.message.chat.id
+    if update.callback_query and update.callback_query.message:
+        return update.callback_query.message.chat.id
+    return None
 
 
 @router.post(
@@ -24,15 +38,29 @@ async def telegram_webhook(
     request: Request,
 ) -> SuccessResponse:
     try:
-        http = OrganizationAPIClient()
-        telegram_token = await http.get_token(organization_id=organization_id)
+        server_api: ServerAPI = request.app.state.server
 
-        bot = Bot(token=telegram_token)
+        token = await get_token_cached(request, organization_id)
+        bot = get_bot_cached(request, organization_id, token)
         request_data = await request.json()
-        await dp.feed_update(bot, types.Update(**request_data))
+        update = types.Update.model_validate(request_data, context={"bot": bot})
+        try:
+            client = await server_api.client.get_me(
+                chat_id=extract_chat_id(
+                    update=update,
+                ),
+            )
+        except ClientNotFoundException:
+            client = None
+
+        await dp.feed_update(
+            bot=bot,
+            update=update,
+            organization_id=organization_id,
+            client=client,
+        )
 
     except Exception as e:
-        logging.error(e)
-    return SuccessResponse(
-        detail="Success send message!",
-    )
+        raise e
+
+    return SuccessResponse(detail="OK")
