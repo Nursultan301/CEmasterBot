@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from pydantic import BaseModel
@@ -7,20 +8,21 @@ from enums.commons import ClientCodeTypeEnum
 
 class ClientInfoSchema(BaseModel):
     id: int
-    firstName: str
-    lastName: str
+    first_name: str
+    last_name: str
     phone: str
-    chatId: str
-    code: str
-    createdAt: datetime = None
-    updatedAt: datetime = None
+    chat_id: str
+    code: str | None = None
+    created_at: datetime
+    updated_at: datetime | None = None
 
 
 class ClientCreateSchema(BaseModel):
-    firstName: str | None = None
-    lastName: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
     phone: str
-    chat_id: int
+    chat_id: str
+    organization_id: uuid.UUID
 
 
 class ClientCodeGenerateSchema(BaseModel):
