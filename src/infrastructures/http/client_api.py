@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import uuid
 from typing import TypeVar
 
 import httpx
@@ -7,8 +8,9 @@ import structlog
 
 from core.structlog import Logger
 from enums.commons import ClientCodeTypeEnum
-from schemas.base import ResponsePayload, ErrorResponse
+from schemas.base import ResponsePayload, ErrorResponse, ResponseListPayload
 from schemas.client import ClientInfoSchema, ClientCreateSchema
+from schemas.shipment import ShipmentListRead
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -89,3 +91,26 @@ class ClientAPI:
             )
         except httpx.RequestError as exc:
             logger.warning("Client API is unavailable", error=str(exc))
+
+    async def get_me_shipments(
+        self, chat_id: int, organization_id: uuid.UUID
+    ) -> list[ShipmentListRead] | None:
+        try:
+            response = await self.http.get(
+                "/clients/shipments/",
+                headers={
+                    "x-data-chat-id": str(chat_id),
+                    "x-tg-organization-id": str(organization_id),
+                },
+            )
+            response.raise_for_status()
+            payload = ResponseListPayload[ShipmentListRead](**response.json())
+            return payload.results
+        except httpx.HTTPStatusError as exc:
+            logger.error(
+                "Client Shipments API request failed",
+                status_code=exc.response.status_code,
+                errors=exc.response.json(),
+            )
+        except httpx.RequestError as exc:
+            logger.warning("Client Shipments API is unavailable", error=str(exc))
