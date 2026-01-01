@@ -135,3 +135,37 @@ async def handle_request_phone(
             "Пожалуйста, попробуйте ещё раз чуть позже или свяжитесь с поддержкой.",
             reply_markup=get_on_start_kb(),
         )
+
+
+def format_shipments(shipments) -> str:
+    lines = ["📦 *Мои посылки*:\n"]
+    for i, s in enumerate(shipments, start=1):
+        lines.append(
+            f"*{i}.* Трек-номер: `{s.tracking_number}`\n"
+            f"• Вес: *{s.weight_kg:.2f} кг*\n"
+            f"• Цена: *{s.declared_value}*\n"
+            f"• Статус: *{s.current_status}*\n"
+        )
+    return "\n".join(lines)
+
+
+@router.message(F.text == ButtonText.MY_SHIPMENTS)
+async def handle_my_shipments(
+    message: types.Message,
+    organization_id: uuid.UUID,
+    server_api: ServerAPI,
+):
+    shipments = await server_api.client.get_me_shipments(
+        chat_id=message.chat.id,
+        organization_id=organization_id,
+    )
+    if not shipments:
+        await message.answer(
+            "📦 Посылок пока нет\n\n"
+            "Как только посылка поступит на склад, она появится в этом разделе."
+        )
+    else:
+        await message.answer(
+            format_shipments(shipments),
+            parse_mode=ParseMode.MARKDOWN,
+        )

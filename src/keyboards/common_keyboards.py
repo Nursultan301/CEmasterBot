@@ -10,7 +10,7 @@ from enums.commons import ClientCodeTypeEnum
 
 class ButtonText:
     MY_CODE = "🎫 Мой код"
-    PACKAGES = "📦 Мои посылки"
+    MY_SHIPMENTS = "📦 Мои посылки"
     CHINA_ADDRESS = "🇨🇳 Адрес в Китае"
     PVZ_ADDRESS = "📍 Адрес (ПВЗ)"
     TARIFFS = "📘 Тарифы и условия"
@@ -22,7 +22,7 @@ def get_on_start_kb() -> ReplyKeyboardMarkup:
     buttons = [
         [
             KeyboardButton(text=ButtonText.MY_CODE),
-            KeyboardButton(text=ButtonText.PACKAGES),
+            KeyboardButton(text=ButtonText.MY_SHIPMENTS),
         ],
         [
             KeyboardButton(text=ButtonText.CHINA_ADDRESS),
