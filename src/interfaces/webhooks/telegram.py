@@ -1,16 +1,13 @@
-import logging
 import uuid
 
-from aiogram import Bot, types
+from aiogram import types
 from aiogram.types import Update
 from fastapi import APIRouter, Request, status
 
 from dispatcher import dp
 from infrastructures.cache.bot_cache import get_bot_cached
 from infrastructures.cache.token_cache import get_token_cached
-from infrastructures.http.client_api import ClientAPI
 from infrastructures.http.exceptions import ClientNotFoundException
-from infrastructures.http.organization_api import OrganizationAPI
 from infrastructures.http.server_api import ServerAPI
 from schemas.base import SuccessResponse
 
