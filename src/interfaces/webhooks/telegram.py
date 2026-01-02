@@ -6,6 +6,7 @@ from fastapi import APIRouter, Request, status
 
 from dispatcher import dp
 from infrastructures.cache.bot_cache import get_bot_cached
+from infrastructures.cache.client_cache import get_client_cached
 from infrastructures.cache.token_cache import get_token_cached
 from infrastructures.http.exceptions import ClientNotFoundException
 from infrastructures.http.server_api import ServerAPI
@@ -37,18 +38,19 @@ async def telegram_webhook(
     try:
         server_api: ServerAPI = request.app.state.server
 
-        token = await get_token_cached(request, organization_id)
+        token = await get_token_cached(server_api, organization_id)
         bot = get_bot_cached(request, organization_id, token)
         request_data = await request.json()
-        update = types.Update.model_validate(request_data, context={"bot": bot})
-        try:
-            client = await server_api.client.get_me(
-                chat_id=extract_chat_id(
-                    update=update,
-                ),
-            )
-        except ClientNotFoundException:
-            client = None
+        update = types.Update.model_validate(
+            request_data,
+            context={"bot": bot},
+        )
+
+        client = await get_client_cached(
+            server_api=server_api,
+            org_id=organization_id,
+            chat_id=extract_chat_id(update),
+        )
 
         await dp.feed_update(
             bot=bot,

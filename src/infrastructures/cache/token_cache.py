@@ -2,29 +2,24 @@ import uuid
 
 from fastapi import Request
 
+from infrastructures.http.server_api import ServerAPI
+from infrastructures.redis.base import redis_storage
+
 TOKEN_TTL_SECONDS = 30 * 60  # 30 минут
 
 
-def token_key(org_id: uuid.UUID) -> str:
-    return f"tg:token:{org_id}"
+async def get_token_cached(server_api: ServerAPI, org_id: uuid.UUID) -> str:
+    key = f"{org_id}:token"
 
-
-async def get_token_cached(request: Request, org_id: uuid.UUID) -> str:
-    redis = request.app.state.redis
-    key = token_key(org_id)
-
-    cached = await redis.get(key)
+    cached = await redis_storage.get(key)
     if cached:
         return cached
 
-    server = request.app.state.server
-    token = await server.organization.get_token(org_id)
+    token = await server_api.organization.get_token(org_id)
 
-    # кладём в redis с TTL
-    await redis.set(key, token, ex=TOKEN_TTL_SECONDS)
+    await redis_storage.set(
+        key=key,
+        value=token,
+        ttl_seconds=TOKEN_TTL_SECONDS,
+    )
     return token
-
-
-async def invalidate_token_cache(request: Request, org_id: uuid.UUID) -> None:
-    redis = request.app.state.redis
-    await redis.delete(token_key(org_id))
