@@ -5,6 +5,8 @@ import structlog
 from aiogram import F, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
+from aiogram.types import CallbackQuery
+from watchfiles import awatch
 
 from core.i18n import btn_variants
 from core.structlog import Logger
@@ -16,6 +18,7 @@ from keyboards.common_keyboards import (
     get_on_btn_register_kb,
     get_phone_request_kb,
     get_on_btn_generate_code_kb,
+    language_kb,
 )
 from schemas.client import ClientInfoSchema, ClientCreateSchema
 
@@ -26,19 +29,23 @@ logger: Logger = structlog.get_logger(__name__)
 Translate = Callable[[str], str]
 
 
+async def get_start_message(_: Translate) -> str:
+    return _(
+        "*Hello!* 👋 \n"
+        "Welcome to the Cargo system. \n\n"
+        "This bot will help you: \n"
+        "• 📦 track the status of your shipments; \n"
+        "• 🧾 get information about your deliveries; \n"
+        "• 🚚 check delivery stages; \n"
+        "• ☎️ contact organization representatives if needed. \n\n"
+        "To get started, please choose an option from the menu."
+    )
+
+
 @router.message(CommandStart())
 async def handle_start(message: types.Message, _: Translate):
     await message.answer(
-        text=_(
-            "*Hello!* 👋 \n"
-            "Welcome to the Cargo system. \n\n"
-            "This bot will help you: \n"
-            "• 📦 track the status of your shipments; \n"
-            "• 🧾 get information about your deliveries; \n"
-            "• 🚚 check delivery stages; \n"
-            "• ☎️ contact organization representatives if needed. \n\n"
-            "To get started, please choose an option from the menu."
-        ),
+        text=await get_start_message(_),
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_on_start_kb(_),
     )
@@ -210,3 +217,43 @@ async def handle_my_shipments(
             format_shipments(shipments, _),
             parse_mode=ParseMode.MARKDOWN,
         )
+
+
+@router.message(F.text.in_(btn_variants(ButtonText.LANGUAGE)))
+async def handle_language(message: types.Message, _: Translate):
+    await message.answer(
+        _("Choose your language:"),
+        reply_markup=language_kb(_),
+    )
+    await message.delete()
+
+
+@router.callback_query(F.data.startswith("lang:"))
+async def set_language(
+    call: CallbackQuery,
+    server_api: ServerAPI,
+    organization_id: uuid.UUID,
+    _: Translate,
+):
+    lang = call.data.split(":", 1)[1]
+
+    if lang == "back":
+        return await call.message.delete()
+
+    await server_api.client.set_lang(
+        chat_id=call.from_user.id,
+        organization_id=organization_id,
+        lang_code=lang,
+    )
+
+    from core.i18n import get_translator
+
+    __ = get_translator(lang)
+
+    await call.message.edit_text("✅")
+    await call.message.answer(
+        text=await get_start_message(__),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=get_on_start_kb(__),
+    )
+    await call.answer()

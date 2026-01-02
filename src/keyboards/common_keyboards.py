@@ -88,13 +88,14 @@ def get_on_btn_generate_code_kb(_: Translate) -> InlineKeyboardMarkup:
     )
 
 
-def language_kb() -> InlineKeyboardMarkup:
+def language_kb(_: Translate) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="🇷🇺 RU", callback_data="lang:ru"),
-                InlineKeyboardButton(text="🇰🇬 KY", callback_data="lang:ky"),
-                InlineKeyboardButton(text="🇬🇧 EN", callback_data="lang:en"),
-            ]
+                InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang:ru"),
+                InlineKeyboardButton(text="🇰🇬 Кыргызча", callback_data="lang:ky"),
+                InlineKeyboardButton(text="🇬🇧 English", callback_data="lang:en"),
+            ],
+            [InlineKeyboardButton(text=_("Back"), callback_data="lang:back")],
         ]
     )
