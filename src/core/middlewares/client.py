@@ -13,13 +13,14 @@ from schemas.client import ClientInfoSchema
 logger: Logger = structlog.get_logger(__name__)
 
 
-def _extract_chat_id(event: TelegramObject, data: dict[str, Any]) -> int | None:
-    # Самый надежный способ — из data
+def _extract_chat_id(
+    event: TelegramObject,
+    data: dict[str, Any],
+) -> int | None:
     event_chat = data.get("event_chat")
     if event_chat:
         return event_chat.id
 
-    # Fallback: по типам событий
     message = getattr(event, "message", None)
     if message and getattr(message, "chat", None):
         return message.chat.id
@@ -34,19 +35,21 @@ def _extract_chat_id(event: TelegramObject, data: dict[str, Any]) -> int | None:
 class ClientInfoMiddleware(BaseMiddleware):
     async def __call__(
         self,
-        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
+        handler: Callable[
+            [TelegramObject, dict[str, Any]],
+            Awaitable[Any],
+        ],
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
         server_api = data.get("server_api")
-        organization_id = data.get("organization_id")  # если вы уже инжектите org_id
+        organization_id = data.get("organization_id")
         chat_id = _extract_chat_id(event, data)
 
         client: ClientInfoSchema | None = None
 
         if server_api and organization_id and chat_id:
             try:
-                # 1) Пытаемся получить клиента (кеш/АПИ)
                 client = await get_client_cached(
                     server_api=server_api,
                     org_id=organization_id,
