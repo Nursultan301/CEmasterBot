@@ -9,6 +9,7 @@ from fastapi.responses import ORJSONResponse
 from core.config import settings
 from core.structlog import Logger
 from infrastructures.http.server_api import ServerAPI
+from infrastructures.redis.base import redis_storage
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -25,10 +26,8 @@ class FastAPIApp(FastAPI):
         app.state.server = ServerAPI(http=app.state.http_client)
 
         # Redis
-        app.state.redis = Redis.from_url(
-            settings.redis.broker_url,
-            decode_responses=True,
-        )
+        await redis_storage.connect()
+
         app.state.bot_cache = {}
 
         try:
@@ -39,7 +38,7 @@ class FastAPIApp(FastAPI):
                 await bot.session.close()
 
             await app.state.http_client.aclose()
-            await app.state.redis.aclose()
+            await redis_storage.close()
 
     app = FastAPI(lifespan=lifespan)
 

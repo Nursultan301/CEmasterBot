@@ -36,13 +36,16 @@ class LoggingConfig(BaseModel):
 
 
 class RedisConfig(BaseModel):
+    url: str | None = Field(default=None)
     host: str
     port: str
-    broker_url: str | None = Field(default=None)
+    prefix: str = "app"
+    default_ttl_seconds: int = 3600
+    decode_responses: bool = False
 
     @model_validator(mode="after")
-    def set_broker_url(self) -> "RedisConfig":
-        self.broker_url = f"redis://{self.host}:{self.port}"
+    def set_url(self) -> "RedisConfig":
+        self.url = f"redis://{self.host}:{self.port}"
         return self
 
 
