@@ -9,7 +9,7 @@ import structlog
 from core.structlog import Logger
 from enums.commons import ClientCodeTypeEnum
 from schemas.base import ResponsePayload, ErrorResponse, ResponseListPayload
-from schemas.client import ClientInfoSchema, ClientCreateSchema
+from schemas.client import ClientInfoSchema, ClientCreateSchema, ClientUpdateSchema
 from schemas.shipment import ShipmentListRead
 
 logger: Logger = structlog.get_logger(__name__)
@@ -114,3 +114,33 @@ class ClientAPI:
             )
         except httpx.RequestError as exc:
             logger.warning("Client Shipments API is unavailable", error=str(exc))
+
+    async def update_client(
+        self,
+        chat_id: int,
+        organization_id: uuid.UUID,
+        update_data: ClientUpdateSchema,
+    ) -> ClientInfoSchema | None:
+        response = await self.http.patch(
+            "/clients/me/",
+            headers={
+                "x-data-chat-id": str(chat_id),
+                "x-tg-organization-id": str(organization_id),
+            },
+            json=update_data.model_dump(exclude_unset=True),
+        )
+        response.raise_for_status()
+        payload = ResponsePayload[ClientInfoSchema](**response.json())
+        return payload.result
+
+    async def set_lang(
+        self,
+        chat_id: int,
+        organization_id: uuid.UUID,
+        lang_code: str,
+    ) -> ClientInfoSchema | None:
+        return await self.update_client(
+            chat_id=chat_id,
+            organization_id=organization_id,
+            update_data=ClientUpdateSchema(language_code=lang_code),
+        )

@@ -27,5 +27,11 @@ class ClientCreateSchema(BaseModel):
     language_code: str
 
 
+class ClientUpdateSchema(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    language_code: str | None = None
+
+
 class ClientCodeGenerateSchema(BaseModel):
     type_client_code: ClientCodeTypeEnum
