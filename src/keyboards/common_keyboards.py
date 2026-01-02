@@ -1,3 +1,5 @@
+from typing import Callable
+
 from aiogram.types import (
     KeyboardButton,
     ReplyKeyboardMarkup,
@@ -8,42 +10,45 @@ from aiogram.types import (
 from enums.commons import ClientCodeTypeEnum
 
 
+Translate = Callable[[str], str]
+
+
 class ButtonText:
-    MY_CODE = "🎫 Мой код"
-    MY_SHIPMENTS = "📦 Мои посылки"
-    CHINA_ADDRESS = "🇨🇳 Адрес в Китае"
-    PVZ_ADDRESS = "📍 Адрес (ПВЗ)"
-    TARIFFS = "📘 Тарифы и условия"
-    SUPPORT = "💬 Техподдержка"
-    LANGUAGE = "🌐 Выбор языка"
+    MY_CODE = "btn.my_code"
+    MY_SHIPMENTS = "btn.my_shipments"
+    CHINA_ADDRESS = "btn.china_address"
+    PVZ_ADDRESS = "btn.pvz_address"
+    TARIFFS = "btn.tariffs"
+    SUPPORT = "btn.support"
+    LANGUAGE = "btn.language"
 
 
-def get_on_start_kb() -> ReplyKeyboardMarkup:
+def get_on_start_kb(_: Translate) -> ReplyKeyboardMarkup:
     buttons = [
         [
-            KeyboardButton(text=ButtonText.MY_CODE),
-            KeyboardButton(text=ButtonText.MY_SHIPMENTS),
+            KeyboardButton(text=_(ButtonText.MY_CODE)),
+            KeyboardButton(text=_(ButtonText.MY_SHIPMENTS)),
         ],
         [
-            KeyboardButton(text=ButtonText.CHINA_ADDRESS),
-            KeyboardButton(text=ButtonText.PVZ_ADDRESS),
+            KeyboardButton(text=_(ButtonText.CHINA_ADDRESS)),
+            KeyboardButton(text=_(ButtonText.PVZ_ADDRESS)),
         ],
         [
-            KeyboardButton(text=ButtonText.TARIFFS),
-            KeyboardButton(text=ButtonText.SUPPORT),
+            KeyboardButton(text=_(ButtonText.TARIFFS)),
+            KeyboardButton(text=_(ButtonText.SUPPORT)),
         ],
-        [KeyboardButton(text=ButtonText.LANGUAGE)],
+        [KeyboardButton(text=_(ButtonText.LANGUAGE))],
     ]
 
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
 
-def get_on_btn_register_kb() -> InlineKeyboardMarkup:
+def get_on_btn_register_kb(_: Translate) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="Зарегистрироватся",
+                    text=_("Register"),
                     callback_data="register_client",
                 ),
             ]
@@ -51,14 +56,13 @@ def get_on_btn_register_kb() -> InlineKeyboardMarkup:
     )
 
 
-def get_phone_request_kb() -> ReplyKeyboardMarkup:
+def get_phone_request_kb(_: Translate) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [
                 KeyboardButton(
-                    text="📞 Поделиться номером телефона",
+                    text=_("📞 Share phone number"),
                     request_contact=True,
-                    callback_data="request_phone",
                 )
             ]
         ],
@@ -67,18 +71,30 @@ def get_phone_request_kb() -> ReplyKeyboardMarkup:
     )
 
 
-def get_on_btn_generate_code_kb() -> InlineKeyboardMarkup:
+def get_on_btn_generate_code_kb(_: Translate) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🈲 Китайский код",
+                    text=_("🈲 Chinese code"),
                     callback_data=ClientCodeTypeEnum.CHINA_NICKNAME,
                 ),
                 InlineKeyboardButton(
-                    text="🆔 Обычный код",
+                    text=_("🆔 Standard code"),
                     callback_data=ClientCodeTypeEnum.DIGITAL,
                 ),
+            ]
+        ]
+    )
+
+
+def language_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="🇷🇺 RU", callback_data="lang:ru"),
+                InlineKeyboardButton(text="🇰🇬 KY", callback_data="lang:ky"),
+                InlineKeyboardButton(text="🇬🇧 EN", callback_data="lang:en"),
             ]
         ]
     )
