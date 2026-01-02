@@ -13,6 +13,7 @@ class ClientInfoSchema(BaseModel):
     phone: str
     chat_id: str
     code: str | None = None
+    language_code: str | None = None
     created_at: datetime
     updated_at: datetime | None = None
 
@@ -23,6 +24,7 @@ class ClientCreateSchema(BaseModel):
     phone: str
     chat_id: str
     organization_id: uuid.UUID
+    language_code: str
 
 
 class ClientCodeGenerateSchema(BaseModel):

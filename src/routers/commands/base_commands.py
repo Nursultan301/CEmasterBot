@@ -149,6 +149,7 @@ async def handle_request_phone(
         phone=message.contact.phone_number,
         chat_id=str(message.chat.id),
         organization_id=organization_id,
+        language_code=message.from_user.language_code,
     )
     client = await server_api.client.create(new_client)
     if client:

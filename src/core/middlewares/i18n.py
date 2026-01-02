@@ -30,7 +30,7 @@ class I18nMiddleware(BaseMiddleware):
         lang: str = DEFAULT_LANG
         if client and tg_user:
             try:
-                lang = normalize_lang(getattr(client, "lang_code", None))
+                lang = normalize_lang(getattr(client, "language_code", None))
             except Exception:
                 # если пользователь ещё не зарегистрирован или API недоступен
                 lang = normalize_lang(lang_from_tg)
