@@ -40,23 +40,14 @@ async def telegram_webhook(
 
         token = await get_token_cached(server_api, organization_id)
         bot = get_bot_cached(request, organization_id, token)
-        request_data = await request.json()
-        update = types.Update.model_validate(
-            request_data,
-            context={"bot": bot},
-        )
-
-        client = await get_client_cached(
-            server_api=server_api,
-            org_id=organization_id,
-            chat_id=extract_chat_id(update),
-        )
 
         await dp.feed_update(
             bot=bot,
-            update=update,
+            update=types.Update.model_validate(
+                obj=await request.json(),
+                context={"bot": bot},
+            ),
             organization_id=organization_id,
-            client=client,
             server_api=server_api,
         )
 
