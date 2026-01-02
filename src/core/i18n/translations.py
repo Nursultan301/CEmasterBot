@@ -47,3 +47,11 @@ def get_translator(lang: str | None) -> Translator:
         return gt(msgid)
 
     return _
+
+
+def btn_variants(key: str) -> set[str]:
+    return {
+        get_translator("ru")(key),
+        get_translator("ky")(key),
+        get_translator("en")(key),
+    }
