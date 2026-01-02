@@ -131,7 +131,7 @@ async def handle_register_client(callback: types.CallbackQuery, _: Translate):
     await callback.answer()
     await callback.message.delete()
     await callback.message.answer(
-        text=_("To complete the registration, please " "share your phone number."),
+        text=_("To complete the registration, please share your phone number."),
         reply_markup=get_phone_request_kb(_),
     )
 
