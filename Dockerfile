@@ -14,6 +14,6 @@ ENV PYTHONPATH=/project
 
 COPY . /project
 
-WORKDIR /project/app
+WORKDIR /project/src
 
 CMD ["uv", "run", "run_main.py"]
