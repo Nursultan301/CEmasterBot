@@ -35,6 +35,7 @@ async def get_telegram_service(data: TelegramSchema) -> SuccessResponse:
         response = await bot.set_webhook(
             url=url,
             allowed_updates=dispatcher.resolve_used_update_types(),
+            drop_pending_updates=True,
         )
         if response:
             return SuccessResponse(
