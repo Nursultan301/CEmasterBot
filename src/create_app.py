@@ -22,6 +22,7 @@ class FastAPIApp(FastAPI):
             base_url=f"{settings.server_site_url}/api/v1",
             timeout=httpx.Timeout(connect=3.0, read=10.0, write=10.0, pool=5.0),
             limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+            trust_env=False,
         )
         app.state.server = ServerAPI(http=app.state.http_client)
 
