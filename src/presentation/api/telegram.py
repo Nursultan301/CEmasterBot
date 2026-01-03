@@ -1,17 +1,20 @@
 import structlog
-from aiogram import Bot, Dispatcher
+from aiogram import Bot
 from fastapi import APIRouter, status
 
 from core.config import settings
-from core.exceptions import ClientException, ServerException
+from core.exceptions import ClientException
 from core.structlog import Logger
-from dispatcher import dp
-from interfaces.api_prefix import api_prefix
+from infrastructures.aiogram import dispatcher
+from presentation.api_prefix import api_prefix
 from schemas.base import SuccessResponse
 
 from schemas.telegram import TelegramSchema
 
-router = APIRouter()
+router = APIRouter(
+    prefix=api_prefix.v1.telegram,
+    tags=["Telegram"],
+)
 
 
 logger: Logger = structlog.get_logger(__name__)
@@ -31,7 +34,7 @@ async def get_telegram_service(data: TelegramSchema) -> SuccessResponse:
         bot = Bot(token=data.token)
         response = await bot.set_webhook(
             url=url,
-            allowed_updates=dp.resolve_used_update_types(),
+            allowed_updates=dispatcher.resolve_used_update_types(),
             drop_pending_updates=True,
         )
         if response:

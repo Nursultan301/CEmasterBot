@@ -4,11 +4,9 @@ from aiogram import types
 from aiogram.types import Update
 from fastapi import APIRouter, Request, status
 
-from dispatcher import dp
+from infrastructures.aiogram import dispatcher
 from infrastructures.cache.bot_cache import get_bot_cached
-from infrastructures.cache.client_cache import get_client_cached
 from infrastructures.cache.token_cache import get_token_cached
-from infrastructures.http.exceptions import ClientNotFoundException
 from infrastructures.http.server_api import ServerAPI
 from schemas.base import SuccessResponse
 
@@ -41,7 +39,7 @@ async def telegram_webhook(
         token = await get_token_cached(server_api, organization_id)
         bot = get_bot_cached(request, organization_id, token)
 
-        await dp.feed_update(
+        await dispatcher.feed_update(
             bot=bot,
             update=types.Update.model_validate(
                 obj=await request.json(),

@@ -6,13 +6,12 @@ from aiogram import F, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery
-from watchfiles import awatch
 
 from core.i18n import btn_variants
 from core.structlog import Logger
 from enums.commons import ClientCodeTypeEnum
 from infrastructures.http.server_api import ServerAPI
-from keyboards.common_keyboards import (
+from infrastructures.aiogram.keyboards.common_keyboards import (
     ButtonText,
     get_on_start_kb,
     get_on_btn_register_kb,

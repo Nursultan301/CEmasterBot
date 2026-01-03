@@ -56,5 +56,5 @@ class FastAPIApp(FastAPI):
             docs_url=custom_docs_url if custom_docs_url else "/docs/",
             redoc_url=None,
             version="0.1.0",
-            openapi_url="/rest/v1/openapi.json",
+            openapi_url="/api/v1/openapi.json",
         )
