@@ -209,7 +209,8 @@ async def handle_my_shipments(
         await message.answer(
             text=_(
                 "📦 No shipments yet\n\n"
-                "As soon as a shipment arrives at the warehouse, it will appear in this section."
+                "As soon as a shipment arrives at the warehouse, "
+                "it will appear in this section."
             )
         )
     else:
@@ -235,6 +236,7 @@ async def set_language(
     organization_id: uuid.UUID,
     _: Translate,
 ):
+    await call.answer()
     lang = call.data.split(":", 1)[1]
 
     if lang == "back":
@@ -256,4 +258,3 @@ async def set_language(
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_on_start_kb(__),
     )
-    await call.answer()
