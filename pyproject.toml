@@ -5,9 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "aiogram>=3.22.0",
+    "aiogram>=3.24.0",
     "babel>=2.17.0",
-    "fastapi[standard]>=0.124.0",
+    "fastapi[standard]>=0.128.0",
     "gunicorn>=23.0.0",
     "httpx>=0.28.1",
     "orjson>=3.11.5",
@@ -16,21 +16,162 @@ dependencies = [
     "redis>=7.1.0",
     "setuptools>=80.9.0",
     "structlog>=25.5.0",
-    "uvicorn[standard]>=0.38.0",
+    "uvicorn[standard]>=0.40.0",
 ]
 
 [dependency-groups]
 dev = [
-    "black>=25.11.0",
+    "black>=25.12.0",
+    "mypy>=1.19.1",
+    "pip-audit>=2.10.0",
+    "ruff>=0.14.10",
 ]
 
 [tool.uv]
 package = false
 
-# Настройки Black (форматирование кода)
+
+# =====================================================
+# MYPY — строгая типизация (src-layout)
+# =====================================================
+[tool.mypy]
+python_version = "3.13"
+strict = true
+
+# strict fine-tuning
+disallow_any_generics = true
+disallow_subclassing_any = false
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
+strict_equality = true
+
+ignore_missing_imports = true
+implicit_reexport = true
+
+plugins = ["pydantic.mypy"]
+
+# ВАЖНО: src-layout
+mypy_path = "src"
+files = ["src"]
+
+exclude = [
+  "^src/presentation/",
+  "^tests/",
+]
+
+# =====================================================
+# PYDANTIC + MYPY
+# =====================================================
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+# =====================================================
+# BLACK — форматирование (py313)
+# =====================================================
 [tool.black]
 line-length = 88
-target-version = ["py312"]
-skip-string-normalization = false
+target-version = ["py313"]
 preview = true
 
+include = '\.pyi?$'
+exclude = '''
+/(
+  \.venv
+ | migrations
+ | __pycache__
+)/
+'''
+
+# =====================================================
+# RUFF — lint + autofix (py313 + src)
+# =====================================================
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+fix = true
+unsafe-fixes = true
+preview = true
+
+src = ["src"]
+
+exclude = [
+  ".venv",
+  "migrations",
+  "__pycache__",
+]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "W",
+  "F",
+  "I",
+  "UP",
+  "B",
+  "C4",
+  "SIM",
+  "RET",
+  "ARG",
+  "PTH",
+  "ERA",
+  "T20",
+  "TCH",
+  "PL",
+  "RUF",
+]
+
+ignore = [
+  "D",        # докстринги по желанию
+  "RUF001",  # кириллица допустима
+  "RUF002",
+  "PLW3201",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+  "core",
+  "enums",
+  "infrastructures",
+  "presentation",
+  "schemas",
+]
+
+# Красивые группировки
+combine-as-imports = true
+force-sort-within-sections = true
+split-on-trailing-comma = true
+
+# Управление пустыми строками/секциями
+lines-after-imports = 2
+order-by-type = true
+
+# Опционально (на вкус):
+ force-single-line = false
+ case-sensitive = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# =====================================================
+# PYDANTIC SETTINGS
+# =====================================================
+[tool.pydantic-settings]
+case_sensitive = true
+
+# =====================================================
+# BUILD SYSTEM
+# =====================================================
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
