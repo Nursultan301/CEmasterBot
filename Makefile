@@ -99,3 +99,18 @@ i18n-check:
 		-d $(LOCALES_DIR) \
 		-D $(DOMAIN) \
 		--statistics
+
+
+.PHONY: lint
+lint:
+	ruff check src/ --fix
+	black src/
+
+.PHONY: format
+format:
+	black src/
+	ruff format src/
+
+.PHONY: check
+chack:
+	ruff check src/

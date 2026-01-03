@@ -1,13 +1,13 @@
 __all__ = [
-    "get_translator",
-    "normalize_lang",
     "DEFAULT_LANG",
     "btn_variants",
+    "get_translator",
+    "normalize_lang",
 ]
 
 from .translations import (
-    get_translator,
-    normalize_lang,
     DEFAULT_LANG,
     btn_variants,
+    get_translator,
+    normalize_lang,
 )

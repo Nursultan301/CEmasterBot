@@ -1,7 +1,7 @@
 import json
 import logging.config
-import uuid
 from typing import Any, TypeVar
+import uuid
 
 import structlog
 from structlog import configure_once
@@ -74,7 +74,7 @@ class Logging[RendererType]:
             log_handlers["file"] = {
                 "level": level,
                 "class": "logging.FileHandler",
-                "filename": settings.logging.log_filename,
+                "filename": settings.logging.log_file,
                 "formatter": "myLogger",
                 "encoding": "utf-8",
             }

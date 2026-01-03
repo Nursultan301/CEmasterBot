@@ -1,12 +1,11 @@
 import uuid
+
 import httpx
 import structlog
-
 
 from core.structlog import Logger
 from schemas.base import ResponsePayload
 from schemas.organization import OrganizationTelegramTokenSchema
-
 
 logger: Logger = structlog.get_logger(__name__)
 

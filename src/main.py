@@ -1,5 +1,5 @@
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 from core.config import settings
 from core.exceptions.handlers import register_exception_handlers

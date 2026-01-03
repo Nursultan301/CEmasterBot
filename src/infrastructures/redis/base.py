@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+from dataclasses import dataclass, replace
 import json
-from dataclasses import dataclass
-from typing import Any, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from redis.asyncio import Redis
-from redis.asyncio.client import Redis as RedisClient
 
-from core.config import settings, RedisConfig
+from core.config import RedisConfig, settings
+
+if TYPE_CHECKING:
+    from types import TracebackType
+
+    from redis.asyncio.client import Redis as RedisClient
 
 T = TypeVar("T")
 
@@ -19,27 +23,29 @@ class RedisError(Exception):
 @dataclass(frozen=True, slots=True, kw_only=True)
 class RedisStorage:
     config: RedisConfig
-    _client: Optional[RedisClient] = None
+    _client: RedisClient | None = None
 
     def _mk_key(self, key: str) -> str:
         return f"{self.config.prefix}:{key}"
 
-    async def connect(self) -> None:
+    async def connect(self) -> RedisStorage:
         if self._client is not None:
-            return
+            return self
+        if self.config.url is None:
+            raise RedisError("Redis URL is not configured.")
         client = Redis.from_url(
-            self.config.url,
+            url=self.config.url,
             decode_responses=self.config.decode_responses,
         )
-        # Проверка соединения
         await client.ping()
-        object.__setattr__(self, "_client", client)
+        return replace(self, _client=client)
 
-    async def close(self) -> None:
+    async def close(self) -> RedisStorage:
         if self._client is None:
-            return
+            return self
+
         await self._client.close()
-        object.__setattr__(self, "_client", None)
+        return replace(self, _client=None)
 
     @property
     def client(self) -> RedisClient:
@@ -47,19 +53,32 @@ class RedisStorage:
             raise RedisError("Redis client is not connected. Call connect() first.")
         return self._client
 
+    # --------- контекст-менеджер ---------
+    async def __aenter__(self) -> RedisStorage:
+        return await self.connect()
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
+        if self._client is not None:
+            await self._client.close()
+
     # --------- базовые операции ---------
     async def set(
         self,
         key: str,
         value: Any,
         *,
-        ttl_seconds: Optional[int] = None,
+        ttl_seconds: int | None = None,
     ) -> bool:
         payload = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
         ttl = self.config.default_ttl_seconds if ttl_seconds is None else ttl_seconds
         return bool(await self.client.set(self._mk_key(key), payload, ex=ttl))
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         raw = await self.client.get(self._mk_key(key))
         if raw is None:
             return None
@@ -79,26 +98,22 @@ class RedisStorage:
 
     # --------- удобные хелперы ---------
     async def set_str(
-        self, key: str, value: str, *, ttl_seconds: Optional[int] = None
+        self,
+        key: str,
+        value: str,
+        *,
+        ttl_seconds: int | None = None,
     ) -> bool:
         ttl = self.config.default_ttl_seconds if ttl_seconds is None else ttl_seconds
         return bool(await self.client.set(self._mk_key(key), value, ex=ttl))
 
-    async def get_str(self, key: str) -> Optional[str]:
+    async def get_str(self, key: str) -> str | None:
         raw = await self.client.get(self._mk_key(key))
         if raw is None:
             return None
         if isinstance(raw, (bytes, bytearray)):
             return raw.decode("utf-8")
         return str(raw)
-
-    # --------- контекст-менеджер ---------
-    async def __aenter__(self) -> "RedisStorage":
-        await self.connect()
-        return self
-
-    async def __aexit__(self, exc_type, exc, tb) -> None:
-        await self.close()
 
 
 redis_storage = RedisStorage(config=settings.redis)

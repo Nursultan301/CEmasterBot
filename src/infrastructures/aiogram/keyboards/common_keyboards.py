@@ -1,14 +1,13 @@
-from typing import Callable
+from collections.abc import Callable
 
 from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardMarkup,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
 )
 
 from enums.commons import ClientCodeTypeEnum
-
 
 Translate = Callable[[str], str]
 

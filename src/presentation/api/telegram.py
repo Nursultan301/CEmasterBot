@@ -1,6 +1,6 @@
-import structlog
 from aiogram import Bot
 from fastapi import APIRouter, status
+import structlog
 
 from core.config import settings
 from core.exceptions import ClientException
@@ -8,7 +8,6 @@ from core.structlog import Logger
 from infrastructures.aiogram import dispatcher
 from presentation.api_prefix import api_prefix
 from schemas.base import SuccessResponse
-
 from schemas.telegram import TelegramSchema
 
 router = APIRouter(
@@ -39,12 +38,13 @@ async def get_telegram_service(data: TelegramSchema) -> SuccessResponse:
         )
         if response:
             return SuccessResponse(
-                detail=f"Telegram service has been successfully set up!",
+                detail="Telegram service has been successfully set up!",
             )
-        else:
-            logger.error("Telegram service has not been set up!", tg_response=response)
-            raise ClientException(detail="Telegram service has not been set up!")
+        logger.error("Telegram service has not been set up!", tg_response=response)
+        raise ClientException(detail="Telegram service has not been set up!")
 
     except Exception as e:
-        logger.error(str(e))
-        raise ClientException(detail="Telegram service has not been set up!")
+        logger.exception("Telegram service has not been set up")
+        raise ClientException(
+            detail="Telegram service has not been set up!",
+        ) from e

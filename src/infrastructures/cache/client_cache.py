@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from typing import final
 import uuid
 
 import structlog
@@ -7,7 +9,6 @@ from infrastructures.http.exceptions import ClientNotFoundException
 from infrastructures.http.server_api import ServerAPI
 from infrastructures.redis.base import redis_storage
 from schemas.client import ClientInfoSchema
-
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -23,8 +24,7 @@ async def get_client_cached(
 
     cached = await redis_storage.get(key)
     if cached:
-        cached_client = ClientInfoSchema.model_validate_json(cached)
-        return cached_client
+        return ClientInfoSchema.model_validate_json(cached)
 
     try:
         client = await server_api.client.get_me(chat_id=chat_id)
@@ -38,3 +38,30 @@ async def get_client_cached(
         ttl_seconds=TOKEN_TTL_SECONDS,
     )
     return client
+
+
+@final
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ClientCache:
+    chat_id: int
+    organization_id: uuid.UUID
+    ttl_seconds: int = 10 * 60
+
+    async def get_key(self) -> str:
+        return f"{self.organization_id}:clients:{self.chat_id}"
+
+    async def get(self) -> ClientInfoSchema | None:
+        cached = await redis_storage.get(await self.get_key())
+        if cached:
+            return ClientInfoSchema.model_validate_json(cached)
+        return None
+
+    async def set(self, client: ClientInfoSchema) -> None:
+        await redis_storage.set(
+            key=await self.get_key(),
+            value=client.model_dump_json(),
+            ttl_seconds=TOKEN_TTL_SECONDS,
+        )
+
+    async def delete(self) -> None:
+        await redis_storage.delete(await self.get_key())

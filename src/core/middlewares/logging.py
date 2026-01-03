@@ -1,5 +1,5 @@
-import structlog
 from starlette.types import ASGIApp, Receive, Scope, Send
+import structlog
 
 from core.structlog import generate_correlation_id
 

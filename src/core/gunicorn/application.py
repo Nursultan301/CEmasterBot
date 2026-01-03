@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from gunicorn.app.base import BaseApplication
 
 
-class Application(BaseApplication):  # type: ignore
+class Application(BaseApplication):
     def __init__(
         self,
         application: FastAPI,

@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
-
-from presentation.webhooks.telegram import router as telegram_router
 from presentation.api_prefix import api_prefix
+from presentation.webhooks.telegram import router as telegram_router
 
 router = APIRouter(
     prefix=api_prefix.webhook.prefix,

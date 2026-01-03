@@ -1,16 +1,19 @@
 from __future__ import annotations
 
-import uuid
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 import httpx
 import structlog
 
-from core.structlog import Logger
-from enums.commons import ClientCodeTypeEnum
-from schemas.base import ResponsePayload, ErrorResponse, ResponseListPayload
-from schemas.client import ClientInfoSchema, ClientCreateSchema, ClientUpdateSchema
+from schemas.base import ErrorResponse, ResponseListPayload, ResponsePayload
+from schemas.client import ClientCreateSchema, ClientInfoSchema, ClientUpdateSchema
 from schemas.shipment import ShipmentListRead
+
+if TYPE_CHECKING:
+    import uuid
+
+    from core.structlog import Logger
+    from enums.commons import ClientCodeTypeEnum
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -45,7 +48,12 @@ class ClientAPI:
         except httpx.RequestError as exc:
             logger.warning("Client API is unavailable", error=str(exc))
 
-    async def create(self, client_data: ClientCreateSchema) -> ClientInfoSchema | None:
+        return None
+
+    async def create(
+        self,
+        client_data: ClientCreateSchema,
+    ) -> ClientInfoSchema | None:
         try:
             response = await self.http.post(
                 "/clients/registration/",
@@ -64,8 +72,10 @@ class ClientAPI:
                 errors=errors.errors,
             )
 
-        except httpx.RequestError as exc:
-            logger.warning("Client API is unavailable", error=str(exc))
+        except httpx.RequestError:
+            logger.exception("Client API is unavailable")
+
+        return None
 
     async def generate_code(
         self,
@@ -89,11 +99,15 @@ class ClientAPI:
                 status_code=exc.response.status_code,
                 errors=exc.response.json(),
             )
-        except httpx.RequestError as exc:
-            logger.warning("Client API is unavailable", error=str(exc))
+        except httpx.RequestError:
+            logger.exception("Client API is unavailable")
+
+        return None
 
     async def get_me_shipments(
-        self, chat_id: int, organization_id: uuid.UUID
+        self,
+        chat_id: int,
+        organization_id: uuid.UUID,
     ) -> list[ShipmentListRead] | None:
         try:
             response = await self.http.get(
@@ -112,8 +126,9 @@ class ClientAPI:
                 status_code=exc.response.status_code,
                 errors=exc.response.json(),
             )
-        except httpx.RequestError as exc:
-            logger.warning("Client Shipments API is unavailable", error=str(exc))
+        except httpx.RequestError:
+            logger.exception("Client Shipments API is unavailable")
+        return None
 
     async def update_client(
         self,

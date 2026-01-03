@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 import uuid
 
 from aiogram import types
@@ -7,9 +8,10 @@ from fastapi import APIRouter, Request, status
 from infrastructures.aiogram import dispatcher
 from infrastructures.cache.bot_cache import get_bot_cached
 from infrastructures.cache.token_cache import get_token_cached
-from infrastructures.http.server_api import ServerAPI
 from schemas.base import SuccessResponse
 
+if TYPE_CHECKING:
+    from infrastructures.http.server_api import ServerAPI
 
 router = APIRouter(
     tags=["Webhook Telegram"],

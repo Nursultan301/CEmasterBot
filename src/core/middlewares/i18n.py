@@ -1,14 +1,19 @@
 from __future__ import annotations
 
-from typing import Any, Awaitable, Callable
+from typing import TYPE_CHECKING, Any
 
-import structlog
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject
+import structlog
 
-from core.i18n import get_translator, normalize_lang, DEFAULT_LANG
-from core.structlog import Logger
-from schemas.client import ClientInfoSchema
+from core.i18n import DEFAULT_LANG, get_translator, normalize_lang
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable
+
+    from aiogram.types import TelegramObject
+
+    from core.structlog import Logger
+    from schemas.client import ClientInfoSchema
 
 logger: Logger = structlog.get_logger(__name__)
 
@@ -24,8 +29,7 @@ class I18nMiddleware(BaseMiddleware):
         tg_user = data.get("event_from_user")
         lang_from_tg = getattr(tg_user, "language_code", None)
 
-        # Ожидаем: Client от Диспедчера
-        client: ClientInfoSchema = data.get("client", None)
+        client: ClientInfoSchema | None = data.get("client")
 
         lang: str = DEFAULT_LANG
         if client and tg_user:

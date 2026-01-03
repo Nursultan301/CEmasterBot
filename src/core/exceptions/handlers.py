@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, Any
 
-import structlog
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from gunicorn.glogging import Logger
 from starlette.responses import JSONResponse
+import structlog
 
 from core.exceptions import (
     ClientException,

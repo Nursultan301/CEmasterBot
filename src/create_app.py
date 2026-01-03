@@ -1,10 +1,10 @@
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from redis.asyncio import Redis
-import httpx
-import structlog
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+import httpx
+import structlog
 
 from core.config import settings
 from core.structlog import Logger
@@ -17,7 +17,7 @@ logger: Logger = structlog.get_logger(__name__)
 class FastAPIApp(FastAPI):
     @staticmethod
     @asynccontextmanager
-    async def lifespan(app: FastAPI):
+    async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
         app.state.http_client = httpx.AsyncClient(
             base_url=f"{settings.server_site_url}/api/v1",
             timeout=httpx.Timeout(connect=3.0, read=10.0, write=10.0, pool=5.0),

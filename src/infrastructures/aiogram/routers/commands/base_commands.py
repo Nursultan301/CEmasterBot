@@ -1,25 +1,25 @@
+from collections.abc import Callable
 import uuid
-from typing import Callable
 
-import structlog
 from aiogram import F, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery
+import structlog
 
-from core.i18n import btn_variants
+from core.i18n import btn_variants, get_translator
 from core.structlog import Logger
 from enums.commons import ClientCodeTypeEnum
-from infrastructures.http.server_api import ServerAPI
 from infrastructures.aiogram.keyboards.common_keyboards import (
     ButtonText,
-    get_on_start_kb,
-    get_on_btn_register_kb,
-    get_phone_request_kb,
     get_on_btn_generate_code_kb,
+    get_on_btn_register_kb,
+    get_on_start_kb,
+    get_phone_request_kb,
     language_kb,
 )
-from schemas.client import ClientInfoSchema, ClientCreateSchema
+from infrastructures.http.server_api import ServerAPI
+from schemas.client import ClientCreateSchema, ClientInfoSchema
 
 router = Router(name=__name__)
 
@@ -28,7 +28,7 @@ logger: Logger = structlog.get_logger(__name__)
 Translate = Callable[[str], str]
 
 
-async def get_start_message(_: Translate) -> str:
+def get_start_message(_: Translate) -> str:
     return _(
         "*Hello!* 👋 \n"
         "Welcome to the Cargo system. \n\n"
@@ -42,16 +42,16 @@ async def get_start_message(_: Translate) -> str:
 
 
 @router.message(CommandStart())
-async def handle_start(message: types.Message, _: Translate):
+async def handle_start(message: types.Message, _: Translate) -> None:
     await message.answer(
-        text=await get_start_message(_),
-        parse_mode=ParseMode.MARKDOWN,
+        text=get_start_message(_),
+        parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=get_on_start_kb(_),
     )
 
 
 @router.message(F.text.in_(btn_variants(ButtonText.CHINA_ADDRESS)))
-async def handle_china_address(message: types.Message, _: Translate):
+async def handle_china_address(message: types.Message, _: Translate) -> None:
     await message.answer(
         text=_(
             "📌 *Address template — just copy and paste*\n\n"
@@ -61,7 +61,7 @@ async def handle_china_address(message: types.Message, _: Translate):
             "📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 "
             "(院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
         ),
-        parse_mode=ParseMode.MARKDOWN,
+        parse_mode=ParseMode.MARKDOWN_V2,
     )
 
 
@@ -70,7 +70,7 @@ async def handle_me_code(
     message: types.Message,
     _: Translate,
     client: ClientInfoSchema | None = None,
-):
+) -> None:
     if client is None:
         await message.answer(
             text=_(
@@ -79,25 +79,24 @@ async def handle_me_code(
             ),
             reply_markup=get_on_btn_register_kb(_),
         )
+    elif client.code:
+        await message.answer(
+            text=_(
+                "Your client code: `%(client_code)s` 📋 \n\n"
+                "Tap and hold the code to copy it."
+            )
+            % {"client_code": client.code},
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_markup=get_on_start_kb(_),
+        )
     else:
-        if client.code:
-            await message.answer(
-                text=_(
-                    f"Your client code: `%(client_code)s` 📋 \n\n"
-                    f"Tap and hold the code to copy it."
-                )
-                % {"client_code": client.code},
-                parse_mode=ParseMode.MARKDOWN,
-                reply_markup=get_on_start_kb(_),
-            )
-        else:
-            await message.answer(
-                text=_(
-                    "ℹ️ You don’t have a client code yet\n\n"
-                    "To continue, please choose one of the options below:"
-                ),
-                reply_markup=get_on_btn_generate_code_kb(_),
-            )
+        await message.answer(
+            text=_(
+                "ℹ️ You don’t have a client code yet\n\n"
+                "To continue, please choose one of the options below:"
+            ),
+            reply_markup=get_on_btn_generate_code_kb(_),
+        )
 
 
 @router.callback_query(F.data == ClientCodeTypeEnum.CHINA_NICKNAME)
@@ -106,7 +105,13 @@ async def handle_generate_china_nickname_code(
     server_api: ServerAPI,
     _: Translate,
     client: ClientInfoSchema | None = None,
-):
+) -> None:
+    await callback.answer()
+
+    if not callback.message:
+        logger.warning("Callback message is None", callback=callback)
+        return
+
     if client is None:
         await callback.message.answer(
             text=_(
@@ -123,8 +128,8 @@ async def handle_generate_china_nickname_code(
         if client:
             await callback.message.answer(
                 text=_(
-                    f"Your client code: `%(client_code)s` 📋 \n\n"
-                    f"Tap and hold the code to copy it."
+                    "Your client code: `%(client_code)s` 📋 \n\n"
+                    "Tap and hold the code to copy it."
                 )
                 % {"client_code": client.code},
                 parse_mode=ParseMode.HTML,
@@ -133,8 +138,13 @@ async def handle_generate_china_nickname_code(
 
 
 @router.callback_query(F.data == "register_client")
-async def handle_register_client(callback: types.CallbackQuery, _: Translate):
+async def handle_register_client(callback: types.CallbackQuery, _: Translate) -> None:
     await callback.answer()
+
+    if not callback.message:
+        logger.warning("Callback message is None", callback=callback)
+        return
+
     await callback.message.delete()
     await callback.message.answer(
         text=_("To complete the registration, please share your phone number."),
@@ -148,7 +158,7 @@ async def handle_request_phone(
     organization_id: uuid.UUID,
     server_api: ServerAPI,
     _: Translate,
-):
+) -> None:
     new_client = ClientCreateSchema(
         first_name=message.from_user.first_name,
         last_name=message.from_user.last_name or "lastName",
@@ -199,7 +209,7 @@ async def handle_my_shipments(
     organization_id: uuid.UUID,
     server_api: ServerAPI,
     _: Translate,
-):
+) -> None:
     shipments = await server_api.client.get_me_shipments(
         chat_id=message.chat.id,
         organization_id=organization_id,
@@ -215,12 +225,12 @@ async def handle_my_shipments(
     else:
         await message.answer(
             format_shipments(shipments, _),
-            parse_mode=ParseMode.MARKDOWN,
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
 
 
 @router.message(F.text.in_(btn_variants(ButtonText.LANGUAGE)))
-async def handle_language(message: types.Message, _: Translate):
+async def handle_language(message: types.Message, _: Translate) -> None:
     await message.answer(
         _("Choose your language:"),
         reply_markup=language_kb(_),
@@ -234,12 +244,13 @@ async def set_language(
     server_api: ServerAPI,
     organization_id: uuid.UUID,
     _: Translate,
-):
+) -> None:
     await call.answer()
     lang = call.data.split(":", 1)[1]
 
     if lang == "back":
-        return await call.message.delete()
+        await call.message.delete()
+        return
 
     await server_api.client.set_lang(
         chat_id=call.from_user.id,
@@ -247,13 +258,11 @@ async def set_language(
         lang_code=lang,
     )
 
-    from core.i18n import get_translator
-
     __ = get_translator(lang)
 
     await call.message.edit_text("✅")
     await call.message.answer(
-        text=await get_start_message(__),
-        parse_mode=ParseMode.MARKDOWN,
+        text=get_start_message(__),
+        parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=get_on_start_kb(__),
     )

@@ -3,8 +3,8 @@ from typing import final
 
 import httpx
 
-from infrastructures.http.organization_api import OrganizationAPI
 from infrastructures.http.client_api import ClientAPI
+from infrastructures.http.organization_api import OrganizationAPI
 
 
 @final

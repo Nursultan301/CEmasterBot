@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import gettext
+from collections.abc import Callable
 from functools import lru_cache
+import gettext
 from pathlib import Path
-from typing import Callable
 
 Translator = Callable[[str], str]
 

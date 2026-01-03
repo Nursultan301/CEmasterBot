@@ -33,6 +33,7 @@ class LoggingConfig(BaseModel):
         "CRITICAL",
     ] = "INFO"
     log_format: str = LOG_DEFAULT_FORMAT
+    log_file: str = "app.log"
 
 
 class RedisConfig(BaseModel):

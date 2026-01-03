@@ -147,18 +147,10 @@ known-first-party = [
   "schemas",
 ]
 
-# Красивые группировки
 combine-as-imports = true
 force-sort-within-sections = true
 split-on-trailing-comma = true
 
-# Управление пустыми строками/секциями
-lines-after-imports = 2
-order-by-type = true
-
-# Опционально (на вкус):
- force-single-line = false
- case-sensitive = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

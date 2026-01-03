@@ -1,14 +1,19 @@
 from __future__ import annotations
 
-from typing import Any, Awaitable, Callable
+from typing import TYPE_CHECKING, Any
 
-import structlog
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject
+import structlog
 
-from core.structlog import Logger
 from infrastructures.cache.client_cache import get_client_cached
-from schemas.client import ClientInfoSchema
+
+if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable
+
+    from aiogram.types import TelegramObject
+
+    from core.structlog import Logger
+    from schemas.client import ClientInfoSchema
 
 logger: Logger = structlog.get_logger(__name__)
 
