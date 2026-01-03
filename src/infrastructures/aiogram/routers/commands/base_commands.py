@@ -45,7 +45,7 @@ def get_start_message(_: Translate) -> str:
 async def handle_start(message: types.Message, _: Translate) -> None:
     await message.answer(
         text=get_start_message(_),
-        parse_mode=ParseMode.MARKDOWN_V2,
+        parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_on_start_kb(_),
     )
 
@@ -61,7 +61,7 @@ async def handle_china_address(message: types.Message, _: Translate) -> None:
             "📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 "
             "(院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
         ),
-        parse_mode=ParseMode.MARKDOWN_V2,
+        parse_mode=ParseMode.MARKDOWN,
     )
 
 
@@ -86,7 +86,7 @@ async def handle_me_code(
                 "Tap and hold the code to copy it."
             )
             % {"client_code": client.code},
-            parse_mode=ParseMode.MARKDOWN_V2,
+            parse_mode=ParseMode.MARKDOWN,
             reply_markup=get_on_start_kb(_),
         )
     else:
@@ -225,7 +225,7 @@ async def handle_my_shipments(
     else:
         await message.answer(
             format_shipments(shipments, _),
-            parse_mode=ParseMode.MARKDOWN_V2,
+            parse_mode=ParseMode.MARKDOWN,
         )
 
 
@@ -263,6 +263,6 @@ async def set_language(
     await call.message.edit_text("✅")
     await call.message.answer(
         text=get_start_message(__),
-        parse_mode=ParseMode.MARKDOWN_V2,
+        parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_on_start_kb(__),
     )
