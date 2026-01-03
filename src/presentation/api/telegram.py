@@ -29,12 +29,12 @@ async def get_telegram_service(data: TelegramSchema) -> SuccessResponse:
         f"{settings.current_site_url}{api_prefix.webhook.prefix}"
         f"{api_prefix.webhook.telegram}/{data.organization_id}/"
     )
+    logger.info("Setting up Telegram service...", url=url)
     try:
         bot = Bot(token=data.token)
         response = await bot.set_webhook(
             url=url,
             allowed_updates=dispatcher.resolve_used_update_types(),
-            drop_pending_updates=True,
         )
         if response:
             return SuccessResponse(
