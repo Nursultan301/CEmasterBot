@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-02 20:45+0600\n"
-"PO-Revision-Date: 2026-01-02 20:51+0600\n"
+"POT-Creation-Date: 2026-01-04 18:42+0600\n"
+"PO-Revision-Date: 2026-01-04 18:40+0600\n"
 "Last-Translator: \n"
-"Language-Team: ky <LL@li.org>\n"
 "Language: ky\n"
+"Language-Team: ky <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Poedit 3.8\n"
 
 #: src/core/i18n/keys.py:6
 msgid "btn.my_code"
@@ -47,23 +46,27 @@ msgstr "💬 Техникалык колдоо"
 msgid "btn.language"
 msgstr "🌐 Тилди тандоо"
 
-#: src/keyboards/common_keyboards.py:51
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:50
 msgid "Register"
 msgstr "Катталуу"
 
-#: src/keyboards/common_keyboards.py:64
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:63
 msgid "📞 Share phone number"
 msgstr "📞 Телефон номерин бөлүшүү"
 
-#: src/keyboards/common_keyboards.py:79
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:78
 msgid "🈲 Chinese code"
 msgstr "🈲 Кытай коду"
 
-#: src/keyboards/common_keyboards.py:83
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:82
 msgid "🆔 Standard code"
 msgstr "🆔 Кадимки код"
 
-#: src/routers/commands/base_commands.py:32
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:98
+msgid "Back"
+msgstr "Артка"
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:34
 msgid ""
 "*Hello!* 👋 \n"
 "Welcome to the Cargo system. \n"
@@ -87,26 +90,24 @@ msgstr ""
 "\n"
 "Ишти баштоо үчүн менюдан керектүү бөлүмдү тандаңыз."
 
-#: src/routers/commands/base_commands.py:50
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:58
 msgid ""
 "📌 *Address template — just copy and paste*\n"
 "\n"
 "📍 *Recipient*: 波罗特 BAT-10952-7C\n"
 "📍 *Recipient phone number*: 17324524246\n"
 "📍 *Region*: 广东省 佛山市 南海区 里水镇\n"
-"📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) "
-"(BAT-10952-7C) 高德: 铁熊"
+"📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
 msgstr ""
 "📌 Дарек шаблону — жөн гана көчүрүп коюңуз\n"
 "\n"
 "📍 *Алуучу*: 波罗特 BAT-10952-7C\n"
 "📍 *Алуучунун телефон номери*: 17324524246\n"
 "📍 *Аймак*: 广东省 佛山市 南海区 里水镇\n"
-"📍 *Дарек*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) "
-"(BAT-10952-7C) 高德: 铁熊"
+"📍 *Дарек*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
 
-#: src/routers/commands/base_commands.py:70
-#: src/routers/commands/base_commands.py:106
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:78
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:119
 msgid ""
 "You are not registered in the system. To receive a client code, you need "
 "to complete the registration."
@@ -114,8 +115,8 @@ msgstr ""
 "Сиз системаға каттала элексиз. Кардар кодун алуу үчүн каттоодон өтүү "
 "зарыл."
 
-#: src/routers/commands/base_commands.py:79
-#: src/routers/commands/base_commands.py:119
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:86
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:132
 #, python-format
 msgid ""
 "Your client code: `%(client_code)s` 📋 \n"
@@ -126,7 +127,7 @@ msgstr ""
 "\n"
 "Кодду көчүрүү үчүн анын үстүн басып туруңуз."
 
-#: src/routers/commands/base_commands.py:89
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:96
 msgid ""
 "ℹ️ You don’t have a client code yet\n"
 "\n"
@@ -136,11 +137,11 @@ msgstr ""
 "\n"
 "\"Улантуу үчүн төмөнкү варианттардын бирин тандаңыз:"
 
-#: src/routers/commands/base_commands.py:133
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:151
 msgid "To complete the registration, please share your phone number."
 msgstr "Каттоону аяктоо үчүн телефон номериңизди бөлүшүңүз."
 
-#: src/routers/commands/base_commands.py:156
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:175
 msgid ""
 "🎉 You have been successfully registered!\n"
 "\n"
@@ -150,7 +151,7 @@ msgstr ""
 "\n"
 "\"Маалыматтарыңыз сакталды, улантууга даярбыз."
 
-#: src/routers/commands/base_commands.py:164
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:183
 msgid ""
 "❌ Registration failed\n"
 "\n"
@@ -162,31 +163,31 @@ msgstr ""
 "Тилекке каршы, учурда сизди каттай алган жокпуз.\n"
 "Кийинчерээк кайра аракет кылып көрүңүз же колдоо кызматына кайрылыңыз."
 
-#: src/routers/commands/base_commands.py:173
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:192
 msgid "📦 *My shipments*:\n"
 msgstr "📦 *Менин посылкаларым* :\n"
 
-#: src/routers/commands/base_commands.py:177
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
 #, python-format
 msgid "*%(index)d.* Tracking number: `%(track)s`\n"
 msgstr "*%(index)d.* Трек номери: `%(track)s`\n"
 
-#: src/routers/commands/base_commands.py:180
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:199
 #, python-format
 msgid "• Weight: *%(weight).2f kg*\n"
 msgstr "• Салмагы: *%(weight).2f кг*\n"
 
-#: src/routers/commands/base_commands.py:181
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:200
 #, python-format
 msgid "• Price: *%(price)s*\n"
 msgstr "• Баасы: *%(price)s*\n"
 
-#: src/routers/commands/base_commands.py:182
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:201
 #, python-format
 msgid "• Status: *%(status)s*\n"
 msgstr "• Стутусу: *%(status)s*\n"
 
-#: src/routers/commands/base_commands.py:202
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:221
 msgid ""
 "📦 No shipments yet\n"
 "\n"
@@ -197,5 +198,10 @@ msgstr ""
 "\n"
 "Посылка кампага келгенде, бул бөлүмдө автоматтык түрдө көрүнөт."
 
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:236
+msgid "Choose your language:"
+msgstr "Тилиңизди тандаңыз:"
+
 #~ msgid "Tap and hold the code to copy it."
 #~ msgstr "Кодду көчүрүү үчүн басып туруп туруңуз."
+

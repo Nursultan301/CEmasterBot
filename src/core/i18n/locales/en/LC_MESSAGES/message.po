@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-02 20:45+0600\n"
-"PO-Revision-Date: 2026-01-02 19:56+0600\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2026-01-04 18:42+0600\n"
+"PO-Revision-Date: 2026-01-04 18:38+0600\n"
+"Last-Translator: \n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -20,49 +20,53 @@ msgstr ""
 
 #: src/core/i18n/keys.py:6
 msgid "btn.my_code"
-msgstr ""
+msgstr "🎫 My code"
 
 #: src/core/i18n/keys.py:7
 msgid "btn.my_shipments"
-msgstr ""
+msgstr "📦 My parcels"
 
 #: src/core/i18n/keys.py:8
 msgid "btn.china_address"
-msgstr ""
+msgstr "🇨🇳 Address in China"
 
 #: src/core/i18n/keys.py:9
 msgid "btn.pvz_address"
-msgstr ""
+msgstr "📍 PVZ address"
 
 #: src/core/i18n/keys.py:10
 msgid "btn.tariffs"
-msgstr ""
+msgstr "📘  Tariffs and conditions"
 
 #: src/core/i18n/keys.py:11
 msgid "btn.support"
-msgstr ""
+msgstr "💬 Technical support"
 
 #: src/core/i18n/keys.py:12
 msgid "btn.language"
-msgstr ""
+msgstr "🌐 Language selection"
 
-#: src/keyboards/common_keyboards.py:51
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:50
 msgid "Register"
 msgstr ""
 
-#: src/keyboards/common_keyboards.py:64
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:63
 msgid "📞 Share phone number"
 msgstr ""
 
-#: src/keyboards/common_keyboards.py:79
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:78
 msgid "🈲 Chinese code"
 msgstr ""
 
-#: src/keyboards/common_keyboards.py:83
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:82
 msgid "🆔 Standard code"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:32
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:98
+msgid "Back"
+msgstr ""
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:34
 msgid ""
 "*Hello!* 👋 \n"
 "Welcome to the Cargo system. \n"
@@ -76,7 +80,7 @@ msgid ""
 "To get started, please choose an option from the menu."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:50
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:58
 msgid ""
 "📌 *Address template — just copy and paste*\n"
 "\n"
@@ -86,15 +90,15 @@ msgid ""
 "📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:70
-#: src/routers/commands/base_commands.py:106
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:78
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:119
 msgid ""
 "You are not registered in the system. To receive a client code, you need "
 "to complete the registration."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:79
-#: src/routers/commands/base_commands.py:119
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:86
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:132
 #, python-format
 msgid ""
 "Your client code: `%(client_code)s` 📋 \n"
@@ -102,25 +106,25 @@ msgid ""
 "Tap and hold the code to copy it."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:89
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:96
 msgid ""
 "ℹ️ You don’t have a client code yet\n"
 "\n"
 "To continue, please choose one of the options below:"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:133
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:151
 msgid "To complete the registration, please share your phone number."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:156
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:175
 msgid ""
 "🎉 You have been successfully registered!\n"
 "\n"
 "We have saved your information and are ready to continue."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:164
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:183
 msgid ""
 "❌ Registration failed\n"
 "\n"
@@ -128,31 +132,31 @@ msgid ""
 "Please try again later or contact support."
 msgstr ""
 
-#: src/routers/commands/base_commands.py:173
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:192
 msgid "📦 *My shipments*:\n"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:177
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
 #, python-format
 msgid "*%(index)d.* Tracking number: `%(track)s`\n"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:180
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:199
 #, python-format
 msgid "• Weight: *%(weight).2f kg*\n"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:181
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:200
 #, python-format
 msgid "• Price: *%(price)s*\n"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:182
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:201
 #, python-format
 msgid "• Status: *%(status)s*\n"
 msgstr ""
 
-#: src/routers/commands/base_commands.py:202
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:221
 msgid ""
 "📦 No shipments yet\n"
 "\n"
@@ -160,12 +164,7 @@ msgid ""
 "section."
 msgstr ""
 
-#~ msgid "Tap and hold the code to copy it."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Your client code: `%(client_code)s` 📋 \n"
-#~ "\n"
-#~ "Tap and hold the code to copy it.client_code"
-#~ msgstr ""
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:236
+msgid "Choose your language:"
+msgstr ""
 
