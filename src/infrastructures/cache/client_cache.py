@@ -47,21 +47,21 @@ class ClientCache:
     organization_id: uuid.UUID
     ttl_seconds: int = 10 * 60
 
-    async def get_key(self) -> str:
+    async def _get_key(self) -> str:
         return f"{self.organization_id}:clients:{self.chat_id}"
 
     async def get(self) -> ClientInfoSchema | None:
-        cached = await redis_storage.get(await self.get_key())
+        cached = await redis_storage.get(await self._get_key())
         if cached:
             return ClientInfoSchema.model_validate_json(cached)
         return None
 
     async def set(self, client: ClientInfoSchema) -> None:
         await redis_storage.set(
-            key=await self.get_key(),
+            key=await self._get_key(),
             value=client.model_dump_json(),
             ttl_seconds=TOKEN_TTL_SECONDS,
         )
 
     async def delete(self) -> None:
-        await redis_storage.delete(await self.get_key())
+        await redis_storage.delete(await self._get_key())
