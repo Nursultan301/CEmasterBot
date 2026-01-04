@@ -20,6 +20,7 @@ from infrastructures.aiogram.keyboards.common_keyboards import (
 )
 from infrastructures.http.server_api import ServerAPI
 from schemas.client import ClientCreateSchema, ClientInfoSchema
+from services.client_service import ClientService
 
 router = Router(name=__name__)
 
@@ -241,8 +242,7 @@ async def handle_language(message: types.Message, _: Translate) -> None:
 @router.callback_query(F.data.startswith("lang:"))
 async def set_language(
     call: CallbackQuery,
-    server_api: ServerAPI,
-    organization_id: uuid.UUID,
+    client_service: ClientService,
     _: Translate,
 ) -> None:
     await call.answer()
@@ -252,11 +252,7 @@ async def set_language(
         await call.message.delete()
         return
 
-    await server_api.client.set_lang(
-        chat_id=call.from_user.id,
-        organization_id=organization_id,
-        lang_code=lang,
-    )
+    await client_service.set_language(lang)
 
     __ = get_translator(lang)
 

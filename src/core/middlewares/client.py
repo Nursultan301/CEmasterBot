@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from aiogram import BaseMiddleware
 import structlog
 
-from infrastructures.cache.client_cache import get_client_cached
+from services.client_service import ClientService
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
@@ -54,14 +54,18 @@ class ClientInfoMiddleware(BaseMiddleware):
         client: ClientInfoSchema | None = None
 
         if server_api and organization_id and chat_id:
+            client_service = ClientService(
+                chat_id=chat_id,
+                organization_id=organization_id,
+                server_api=server_api,
+            )
             try:
-                client = await get_client_cached(
-                    server_api=server_api,
-                    org_id=organization_id,
-                    chat_id=chat_id,
-                )
+                client = await client_service.get_me()
             except Exception:
                 client = None
+        else:
+            client_service = None
 
         data["client"] = client
+        data["client_service"] = client_service
         return await handler(event, data)
