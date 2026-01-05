@@ -1,5 +1,3 @@
-from collections.abc import Callable
-
 from aiogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -7,9 +5,8 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
 )
 
+from core.i18n import Translator
 from enums.commons import ClientCodeTypeEnum
-
-Translate = Callable[[str], str]
 
 
 class ButtonText:
@@ -22,7 +19,7 @@ class ButtonText:
     LANGUAGE = "btn.language"
 
 
-def get_on_start_kb(_: Translate) -> ReplyKeyboardMarkup:
+def get_on_start_kb(_: Translator) -> ReplyKeyboardMarkup:
     buttons = [
         [
             KeyboardButton(text=_(ButtonText.MY_CODE)),
@@ -42,7 +39,7 @@ def get_on_start_kb(_: Translate) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
 
-def get_on_btn_register_kb(_: Translate) -> InlineKeyboardMarkup:
+def get_on_btn_register_kb(_: Translator) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -55,7 +52,7 @@ def get_on_btn_register_kb(_: Translate) -> InlineKeyboardMarkup:
     )
 
 
-def get_phone_request_kb(_: Translate) -> ReplyKeyboardMarkup:
+def get_phone_request_kb(_: Translator) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [
@@ -70,7 +67,7 @@ def get_phone_request_kb(_: Translate) -> ReplyKeyboardMarkup:
     )
 
 
-def get_on_btn_generate_code_kb(_: Translate) -> InlineKeyboardMarkup:
+def get_on_btn_generate_code_kb(_: Translator) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -87,7 +84,7 @@ def get_on_btn_generate_code_kb(_: Translate) -> InlineKeyboardMarkup:
     )
 
 
-def language_kb(_: Translate) -> InlineKeyboardMarkup:
+def language_kb(_: Translator) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [

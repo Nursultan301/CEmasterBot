@@ -1,4 +1,3 @@
-from collections.abc import Callable
 import uuid
 
 from aiogram import F, Router, types
@@ -7,7 +6,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery
 import structlog
 
-from core.i18n import btn_variants, get_translator
+from core.i18n import Translator, btn_variants, get_translator
 from core.structlog import Logger
 from enums.commons import ClientCodeTypeEnum
 from infrastructures.aiogram.keyboards.common_keyboards import (
@@ -26,10 +25,8 @@ router = Router(name=__name__)
 
 logger: Logger = structlog.get_logger(__name__)
 
-Translate = Callable[[str], str]
 
-
-def get_start_message(_: Translate) -> str:
+def get_start_message(_: Translator) -> str:
     return _(
         "*Hello!* 👋 \n"
         "Welcome to the Cargo system. \n\n"
@@ -43,7 +40,7 @@ def get_start_message(_: Translate) -> str:
 
 
 @router.message(CommandStart())
-async def handle_start(message: types.Message, _: Translate) -> None:
+async def handle_start(message: types.Message, _: Translator) -> None:
     await message.answer(
         text=get_start_message(_),
         parse_mode=ParseMode.MARKDOWN,
@@ -52,7 +49,7 @@ async def handle_start(message: types.Message, _: Translate) -> None:
 
 
 @router.message(F.text.in_(btn_variants(ButtonText.CHINA_ADDRESS)))
-async def handle_china_address(message: types.Message, _: Translate) -> None:
+async def handle_china_address(message: types.Message, _: Translator) -> None:
     await message.answer(
         text=_(
             "📌 *Address template — just copy and paste*\n\n"
@@ -69,7 +66,7 @@ async def handle_china_address(message: types.Message, _: Translate) -> None:
 @router.message(F.text.in_(btn_variants(ButtonText.MY_CODE)))
 async def handle_me_code(
     message: types.Message,
-    _: Translate,
+    _: Translator,
     client: ClientInfoSchema | None = None,
 ) -> None:
     if client is None:
@@ -104,7 +101,7 @@ async def handle_me_code(
 async def handle_generate_china_nickname_code(
     callback: types.CallbackQuery,
     server_api: ServerAPI,
-    _: Translate,
+    _: Translator,
     client: ClientInfoSchema | None = None,
 ) -> None:
     await callback.answer()
@@ -139,7 +136,7 @@ async def handle_generate_china_nickname_code(
 
 
 @router.callback_query(F.data == "register_client")
-async def handle_register_client(callback: types.CallbackQuery, _: Translate) -> None:
+async def handle_register_client(callback: types.CallbackQuery, _: Translator) -> None:
     await callback.answer()
 
     if not callback.message:
@@ -158,7 +155,7 @@ async def handle_request_phone(
     message: types.Message,
     organization_id: uuid.UUID,
     server_api: ServerAPI,
-    _: Translate,
+    _: Translator,
 ) -> None:
     new_client = ClientCreateSchema(
         first_name=message.from_user.first_name,
@@ -188,7 +185,7 @@ async def handle_request_phone(
         )
 
 
-def format_shipments(shipments, _: Translate) -> str:
+def format_shipments(shipments, _: Translator) -> str:
     lines = [_("📦 *My shipments*:\n")]
     for i, s in enumerate(shipments, start=1):
         lines.append(
@@ -209,7 +206,7 @@ async def handle_my_shipments(
     message: types.Message,
     organization_id: uuid.UUID,
     server_api: ServerAPI,
-    _: Translate,
+    _: Translator,
 ) -> None:
     shipments = await server_api.client.get_me_shipments(
         chat_id=message.chat.id,
@@ -231,7 +228,7 @@ async def handle_my_shipments(
 
 
 @router.message(F.text.in_(btn_variants(ButtonText.LANGUAGE)))
-async def handle_language(message: types.Message, _: Translate) -> None:
+async def handle_language(message: types.Message, _: Translator) -> None:
     await message.answer(
         _("Choose your language:"),
         reply_markup=language_kb(_),
@@ -243,7 +240,7 @@ async def handle_language(message: types.Message, _: Translate) -> None:
 async def set_language(
     call: CallbackQuery,
     client_service: ClientService,
-    _: Translate,
+    _: Translator,
 ) -> None:
     await call.answer()
     lang = call.data.split(":", 1)[1]

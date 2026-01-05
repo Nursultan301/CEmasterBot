@@ -1,5 +1,6 @@
 __all__ = [
     "DEFAULT_LANG",
+    "Translator",
     "btn_variants",
     "get_translator",
     "normalize_lang",
@@ -7,6 +8,7 @@ __all__ = [
 
 from .translations import (
     DEFAULT_LANG,
+    Translator,
     btn_variants,
     get_translator,
     normalize_lang,
