@@ -253,7 +253,7 @@ async def set_language(
 
     __ = get_translator(lang)
 
-    await call.message.edit_text("✅")
+    await call.message.delete()
     await call.message.answer(
         text=get_start_message(__),
         parse_mode=ParseMode.MARKDOWN,
