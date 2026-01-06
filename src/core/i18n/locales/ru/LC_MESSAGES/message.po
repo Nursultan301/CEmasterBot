@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-04 18:42+0600\n"
+"POT-Creation-Date: 2026-01-06 18:42+0600\n"
 "PO-Revision-Date: 2026-01-04 18:39+0600\n"
 "Last-Translator: \n"
 "Language: ru\n"
@@ -47,27 +47,27 @@ msgstr "💬 Техническая поддержка"
 msgid "btn.language"
 msgstr "🌐 Выбор языка"
 
-#: src/infrastructures/aiogram/keyboards/common_keyboards.py:50
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:47
 msgid "Register"
 msgstr "Зарегистрировать"
 
-#: src/infrastructures/aiogram/keyboards/common_keyboards.py:63
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:60
 msgid "📞 Share phone number"
 msgstr "📞  Поделитесь номером телефона"
 
-#: src/infrastructures/aiogram/keyboards/common_keyboards.py:78
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:75
 msgid "🈲 Chinese code"
 msgstr "🈲 Китайский код"
 
-#: src/infrastructures/aiogram/keyboards/common_keyboards.py:82
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:79
 msgid "🆔 Standard code"
 msgstr "🆔 Стандартный код"
 
-#: src/infrastructures/aiogram/keyboards/common_keyboards.py:98
+#: src/infrastructures/aiogram/keyboards/common_keyboards.py:95
 msgid "Back"
 msgstr "Назад"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:34
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:31
 msgid ""
 "*Hello!* 👋 \n"
 "Welcome to the Cargo system. \n"
@@ -80,7 +80,7 @@ msgid ""
 "\n"
 "To get started, please choose an option from the menu."
 msgstr ""
-"* Здравствуйте! * 👋 \n"
+"*Здравствуйте!* 👋 \n"
 "Добро пожаловать в систему грузовых перевозок. \n"
 "\n"
 "Этот бот поможет вам: \n"
@@ -91,7 +91,7 @@ msgstr ""
 "\n"
 "Чтобы начать, пожалуйста, выберите нужный вариант в меню."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:58
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:55
 msgid ""
 "📌 *Address template — just copy and paste*\n"
 "\n"
@@ -102,15 +102,15 @@ msgid ""
 msgstr ""
 "📌 *Шаблон адреса — просто скопируйте и вставьте*\n"
 "\n"
-"📍*Получатель*: Borot BAT-10952-7C\n"
-"📍 *Номер телефона получателя*: 17324524246\n"
-"Регион*: Город Лишуй, район Наньхай, город Фошань, провинция Гуандун\n"
+"📍 *Получатель*: Borot BAT-10952-7C \n"
+"📍 *Номер телефона получателя*: 17324524246 \n"
+"📍 *Регион*: Город Лишуй, район Наньхай, город Фошань, провинция Гуандун\n"
 "📍 *Адрес*: No. 5, Heng 5th Road, Декун, город Лишуй, район Наньхай, город"
 " Фошань, провинция Гуандун (103 Pineapple Jicang во внутреннем дворе) "
 "(BAT-10952-7C) Адрес: Tiexiong"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:78
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:119
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:75
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:116
 msgid ""
 "You are not registered in the system. To receive a client code, you need "
 "to complete the registration."
@@ -118,8 +118,8 @@ msgstr ""
 "Вы не зарегистрированы в системе. Чтобы получить код клиента, вам "
 "необходимо завершить регистрацию."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:86
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:132
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:83
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:129
 #, python-format
 msgid ""
 "Your client code: `%(client_code)s` 📋 \n"
@@ -130,7 +130,7 @@ msgstr ""
 "\n"
 "Нажмите и удерживайте код, чтобы скопировать его."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:96
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:93
 msgid ""
 "ℹ️ You don’t have a client code yet\n"
 "\n"
@@ -140,11 +140,11 @@ msgstr ""
 "\n"
 "Чтобы продолжить, пожалуйста, выберите один из приведенных ниже вариантов:"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:151
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:148
 msgid "To complete the registration, please share your phone number."
 msgstr "Чтобы завершить регистрацию, пожалуйста, сообщите свой номер телефона."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:175
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:172
 msgid ""
 "🎉 You have been successfully registered!\n"
 "\n"
@@ -154,7 +154,7 @@ msgstr ""
 "\n"
 "Мы сохранили вашу информацию и готовы продолжить."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:183
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:180
 msgid ""
 "❌ Registration failed\n"
 "\n"
@@ -166,31 +166,31 @@ msgstr ""
 "К сожалению, в данный момент нам не удалось зарегистрировать вас.\n"
 "Пожалуйста, повторите попытку позже или обратитесь в службу поддержки."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:192
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:189
 msgid "📦 *My shipments*:\n"
 msgstr "📦 *Мои отправления*:\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:193
 #, python-format
 msgid "*%(index)d.* Tracking number: `%(track)s`\n"
 msgstr "*%(index)d.* Номер отслеживания: `%(track)s`\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:199
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
 #, python-format
 msgid "• Weight: *%(weight).2f kg*\n"
 msgstr "• Вес: *%(weight).2f кг*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:200
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:197
 #, python-format
 msgid "• Price: *%(price)s*\n"
 msgstr "• Цена: *%(price)s*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:201
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:198
 #, python-format
 msgid "• Status: *%(status)s*\n"
 msgstr "• Статус: *%(status)s*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:221
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:218
 msgid ""
 "📦 No shipments yet\n"
 "\n"
@@ -201,7 +201,7 @@ msgstr ""
 "\n"
 "Как только отправка поступит на склад, она появится в этом разделе."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:236
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:233
 msgid "Choose your language:"
 msgstr "Выберите язык:"
 
