@@ -10,6 +10,9 @@ services:
     depends_on:
       ce_bot_redis:
         condition: service_healthy
+    networks:
+      - ce_master_network
+      - app_net
 
   ce_bot_redis:
     image: redis:8.2-alpine
@@ -25,8 +28,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
+    networks:
+      - app_net
 
 volumes:
   ce_bot_redis_data:
     driver: local
+
+networks:
+  ce_master_network:
+    external: true
+  app_net:
+    driver: bridge
+
