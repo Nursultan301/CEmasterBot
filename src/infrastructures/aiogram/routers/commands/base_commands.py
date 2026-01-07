@@ -100,6 +100,7 @@ async def handle_me_code(
 @router.callback_query(F.data == ClientCodeTypeEnum.CHINA_NICKNAME)
 async def handle_generate_china_nickname_code(
     callback: types.CallbackQuery,
+    organization_id: uuid.UUID,
     server_api: ServerAPI,
     _: Translator,
     client: ClientInfoSchema | None = None,
@@ -121,7 +122,7 @@ async def handle_generate_china_nickname_code(
     else:
         client = await server_api.client.generate_code(
             chat_id=callback.message.chat.id,
-            organization_id=client.organization_id,
+            organization_id=organization_id,
             type_client_code=ClientCodeTypeEnum.CHINA_NICKNAME,
         )
         if client:
