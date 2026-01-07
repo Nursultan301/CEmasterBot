@@ -34,7 +34,10 @@ class ClientService:
             return cached
 
         try:
-            client = await self.server_api.client.get_me(chat_id=self.chat_id)
+            client = await self.server_api.client.get_me(
+                chat_id=self.chat_id,
+                organization_id=self.organization_id,
+            )
             logger.info("Client in cache not found", client=client)
         except ClientNotFoundException:
             return None

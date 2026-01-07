@@ -26,11 +26,18 @@ class ClientAPI:
     def __init__(self, http: httpx.AsyncClient) -> None:
         self.http = http
 
-    async def get_me(self, chat_id: int) -> ClientInfoSchema | None:
+    async def get_me(
+        self,
+        chat_id: int,
+        organization_id: uuid.UUID,
+    ) -> ClientInfoSchema | None:
         try:
             response = await self.http.get(
                 "/clients/me/",
-                headers={"x-data-chat-id": str(chat_id)},
+                headers={
+                    "x-data-chat-id": str(chat_id),
+                    "x-data-organization-id": str(organization_id),
+                },
             )
             response.raise_for_status()
             payload = ResponsePayload[ClientInfoSchema](**response.json())
@@ -80,12 +87,16 @@ class ClientAPI:
     async def generate_code(
         self,
         chat_id: int,
+        organization_id: uuid.UUID,
         type_client_code: ClientCodeTypeEnum,
     ) -> ClientInfoSchema | None:
         try:
             response = await self.http.post(
                 "/clients/generate/client-code/",
-                headers={"x-data-chat-id": str(chat_id)},
+                headers={
+                    "x-data-chat-id": str(chat_id),
+                    "x-data-organization-id": str(organization_id),
+                },
                 json={
                     "type_client_code": type_client_code,
                 },
@@ -114,7 +125,7 @@ class ClientAPI:
                 "/clients/shipments/",
                 headers={
                     "x-data-chat-id": str(chat_id),
-                    "x-tg-organization-id": str(organization_id),
+                    "x-data-organization-id": str(organization_id),
                 },
             )
             response.raise_for_status()
@@ -140,7 +151,7 @@ class ClientAPI:
             "/clients/me/",
             headers={
                 "x-data-chat-id": str(chat_id),
-                "x-tg-organization-id": str(organization_id),
+                "x-data-organization-id": str(organization_id),
             },
             json=update_data.model_dump(exclude_unset=True),
         )

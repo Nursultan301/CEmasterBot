@@ -120,8 +120,9 @@ async def handle_generate_china_nickname_code(
         )
     else:
         client = await server_api.client.generate_code(
-            callback.message.chat.id,
-            ClientCodeTypeEnum.CHINA_NICKNAME,
+            chat_id=callback.message.chat.id,
+            organization_id=client.organization_id,
+            type_client_code=ClientCodeTypeEnum.CHINA_NICKNAME,
         )
         if client:
             await callback.message.answer(
