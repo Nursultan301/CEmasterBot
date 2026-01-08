@@ -122,7 +122,7 @@ class ClientAPI:
     ) -> list[ShipmentListRead] | None:
         try:
             response = await self.http.get(
-                "/clients/shipments/",
+                "/clients/me/shipments/",
                 headers={
                     "x-data-chat-id": str(chat_id),
                     "x-data-organization-id": str(organization_id),
