@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-06 18:42+0600\n"
+"POT-Creation-Date: 2026-01-08 19:32+0600\n"
 "PO-Revision-Date: 2026-01-04 18:38+0600\n"
 "Last-Translator: \n"
 "Language: en\n"
@@ -91,14 +91,14 @@ msgid ""
 msgstr ""
 
 #: src/infrastructures/aiogram/routers/commands/base_commands.py:75
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:116
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:118
 msgid ""
 "You are not registered in the system. To receive a client code, you need "
 "to complete the registration."
 msgstr ""
 
 #: src/infrastructures/aiogram/routers/commands/base_commands.py:83
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:129
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:132
 #, python-format
 msgid ""
 "Your client code: `%(client_code)s` 📋 \n"
@@ -113,18 +113,18 @@ msgid ""
 "To continue, please choose one of the options below:"
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:148
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:151
 msgid "To complete the registration, please share your phone number."
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:172
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:175
 msgid ""
 "🎉 You have been successfully registered!\n"
 "\n"
 "We have saved your information and are ready to continue."
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:180
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:183
 msgid ""
 "❌ Registration failed\n"
 "\n"
@@ -132,31 +132,31 @@ msgid ""
 "Please try again later or contact support."
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:189
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:192
 msgid "📦 *My shipments*:\n"
-msgstr ""
-
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:193
-#, python-format
-msgid "*%(index)d.* Tracking number: `%(track)s`\n"
 msgstr ""
 
 #: src/infrastructures/aiogram/routers/commands/base_commands.py:196
 #, python-format
+msgid "*%(index)d.* Tracking number: `%(track)s`\n"
+msgstr ""
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:199
+#, python-format
 msgid "• Weight: *%(weight).2f kg*\n"
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:197
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:200
 #, python-format
 msgid "• Price: *%(price)s*\n"
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:198
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:201
 #, python-format
 msgid "• Status: *%(status)s*\n"
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:218
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:221
 msgid ""
 "📦 No shipments yet\n"
 "\n"
@@ -164,7 +164,32 @@ msgid ""
 "section."
 msgstr ""
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:233
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:236
 msgid "Choose your language:"
 msgstr ""
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:271
+msgid "What is your question? And also attach a photo or video below."
+msgstr ""
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:281
+msgid "Address: Moscow Luschikhina Avenue 101/3 4th entrance office A3 red door"
+msgstr ""
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:291
+msgid ""
+"*$6 per kg.* Bulk light goods are calculated at a cubic capacity of $ 300"
+" per cubic meter."
+msgstr ""
+
+#~ msgid "Напишите какой у вас вопрос? А также прикрепите фото или видео ниже."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Адрес: г. Москва проспект Лущихина 101/3"
+#~ " 4-й подьезд офис А3 красная дверь"
+#~ msgstr ""
+
+#~ msgid "*6$ за кг.* Обьемные легкие товары считаются по кубатуре 300$ за куб.м"
+#~ msgstr ""
 

@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-06 18:42+0600\n"
-"PO-Revision-Date: 2026-01-04 18:40+0600\n"
+"POT-Creation-Date: 2026-01-08 19:32+0600\n"
+"PO-Revision-Date: 2026-01-08 19:35+0600\n"
 "Last-Translator: \n"
-"Language: ky\n"
 "Language-Team: ky <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ky\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
+"X-Generator: Poedit 3.8\n"
 
 #: src/core/i18n/keys.py:6
 msgid "btn.my_code"
@@ -97,26 +98,27 @@ msgid ""
 "📍 *Recipient*: 波罗特 BAT-10952-7C\n"
 "📍 *Recipient phone number*: 17324524246\n"
 "📍 *Region*: 广东省 佛山市 南海区 里水镇\n"
-"📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
+"📍 *Address*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) "
+"(BAT-10952-7C) 高德: 铁熊"
 msgstr ""
 "📌 Дарек шаблону — жөн гана көчүрүп коюңуз\n"
 "\n"
 "📍 *Алуучу*: 波罗特 BAT-10952-7C\n"
 "📍 *Алуучунун телефон номери*: 17324524246\n"
 "📍 *Аймак*: 广东省 佛山市 南海区 里水镇\n"
-"📍 *Дарек*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) (BAT-10952-7C) 高德: 铁熊"
+"📍 *Дарек*: 广东省 佛山市 南海区 里水镇 得村横5路5号 (院内103菠萝吉仓) "
+"(BAT-10952-7C) 高德: 铁熊"
 
 #: src/infrastructures/aiogram/routers/commands/base_commands.py:75
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:116
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:118
 msgid ""
-"You are not registered in the system. To receive a client code, you need "
-"to complete the registration."
+"You are not registered in the system. To receive a client code, you need to "
+"complete the registration."
 msgstr ""
-"Сиз системаға каттала элексиз. Кардар кодун алуу үчүн каттоодон өтүү "
-"зарыл."
+"Сиз системаға каттала элексиз. Кардар кодун алуу үчүн каттоодон өтүү зарыл."
 
 #: src/infrastructures/aiogram/routers/commands/base_commands.py:83
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:129
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:132
 #, python-format
 msgid ""
 "Your client code: `%(client_code)s` 📋 \n"
@@ -137,11 +139,11 @@ msgstr ""
 "\n"
 "\"Улантуу үчүн төмөнкү варианттардын бирин тандаңыз:"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:148
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:151
 msgid "To complete the registration, please share your phone number."
 msgstr "Каттоону аяктоо үчүн телефон номериңизди бөлүшүңүз."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:172
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:175
 msgid ""
 "🎉 You have been successfully registered!\n"
 "\n"
@@ -151,7 +153,7 @@ msgstr ""
 "\n"
 "\"Маалыматтарыңыз сакталды, улантууга даярбыз."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:180
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:183
 msgid ""
 "❌ Registration failed\n"
 "\n"
@@ -163,45 +165,60 @@ msgstr ""
 "Тилекке каршы, учурда сизди каттай алган жокпуз.\n"
 "Кийинчерээк кайра аракет кылып көрүңүз же колдоо кызматына кайрылыңыз."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:189
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:192
 msgid "📦 *My shipments*:\n"
 msgstr "📦 *Менин посылкаларым* :\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:193
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
 #, python-format
 msgid "*%(index)d.* Tracking number: `%(track)s`\n"
 msgstr "*%(index)d.* Трек номери: `%(track)s`\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:196
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:199
 #, python-format
 msgid "• Weight: *%(weight).2f kg*\n"
 msgstr "• Салмагы: *%(weight).2f кг*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:197
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:200
 #, python-format
 msgid "• Price: *%(price)s*\n"
 msgstr "• Баасы: *%(price)s*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:198
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:201
 #, python-format
 msgid "• Status: *%(status)s*\n"
 msgstr "• Стутусу: *%(status)s*\n"
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:218
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:221
 msgid ""
 "📦 No shipments yet\n"
 "\n"
-"As soon as a shipment arrives at the warehouse, it will appear in this "
-"section."
+"As soon as a shipment arrives at the warehouse, it will appear in this section."
 msgstr ""
 "📦 Азырынча посылкалар жок\n"
 "\n"
 "Посылка кампага келгенде, бул бөлүмдө автоматтык түрдө көрүнөт."
 
-#: src/infrastructures/aiogram/routers/commands/base_commands.py:233
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:236
 msgid "Choose your language:"
 msgstr "Тилиңизди тандаңыз:"
 
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:271
+msgid "What is your question? And also attach a photo or video below."
+msgstr ""
+"Сиздин сурооңуз кандай? Ошондой эле төмөндөгү сүрөттү же видеону тиркеңиз."
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:281
+msgid "Address: Moscow Luschikhina Avenue 101/3 4th entrance office A3 red door"
+msgstr "Дареги: Москва Лущихина Авенюсу 101/3 4-кире бериш кеңсеси А3 кызыл эшик"
+
+#: src/infrastructures/aiogram/routers/commands/base_commands.py:291
+msgid ""
+"*$6 per kg.* Bulk light goods are calculated at a cubic capacity of $ 300 per "
+"cubic meter."
+msgstr ""
+"*КГ үчүн 6 доллар.* Жапырт жеңил товарлар куб метрге 300 доллар кубдук "
+"кубаттуулукта эсептелет."
+
 #~ msgid "Tap and hold the code to copy it."
 #~ msgstr "Кодду көчүрүү үчүн басып туруп туруңуз."
-

@@ -110,6 +110,7 @@ async def handle_generate_china_nickname_code(
     if not callback.message:
         logger.warning("Callback message is None", callback=callback)
         return
+    await callback.message.delete()
 
     if client is None:
         await callback.message.answer(
@@ -260,4 +261,35 @@ async def set_language(
         text=get_start_message(__),
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_on_start_kb(__),
+    )
+
+
+@router.message(F.text.in_(btn_variants(ButtonText.SUPPORT)))
+async def handle_support(message: types.Message, _: Translator) -> None:
+    await message.answer(
+        text=_(
+            "What is your question? And also attach a photo or video below.",
+        ),
+        reply_markup=get_on_start_kb(_),
+    )
+
+
+@router.message(F.text.in_(btn_variants(ButtonText.PVZ_ADDRESS)))
+async def handle_pvz_address(message: types.Message, _: Translator) -> None:
+    await message.answer(
+        text=_(
+            "Address: Moscow Luschikhina Avenue 101/3 4th entrance office A3 red door"
+        ),
+        reply_markup=get_on_start_kb(_),
+    )
+
+
+@router.message(F.text.in_(btn_variants(ButtonText.TARIFFS)))
+async def handle_tariffs(message: types.Message, _: Translator) -> None:
+    await message.answer(
+        text=_(
+            "*$6 per kg.* Bulk light goods are "
+            "calculated at a cubic capacity of $ 300 per cubic meter."
+        ),
+        reply_markup=get_on_start_kb(_),
     )
