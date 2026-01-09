@@ -99,8 +99,10 @@ async def handle_my_code(
 
 @router.callback_query(
     F.data.in_(
-        ClientCodeTypeEnum.CHINA_NICKNAME,
-        ClientCodeTypeEnum.DIGITAL,
+        [
+            ClientCodeTypeEnum.CHINA_NICKNAME,
+            ClientCodeTypeEnum.DIGITAL,
+        ]
     )
 )
 async def handle_generate_client_code(
