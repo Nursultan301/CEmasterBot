@@ -64,7 +64,7 @@ async def handle_china_address(message: types.Message, _: Translator) -> None:
 
 
 @router.message(F.text.in_(btn_variants(ButtonText.MY_CODE)))
-async def handle_me_code(
+async def handle_my_code(
     message: types.Message,
     _: Translator,
     client: ClientInfoSchema | None = None,
@@ -97,8 +97,13 @@ async def handle_me_code(
         )
 
 
-@router.callback_query(F.data == ClientCodeTypeEnum.CHINA_NICKNAME)
-async def handle_generate_china_nickname_code(
+@router.callback_query(
+    F.data.in_(
+        ClientCodeTypeEnum.CHINA_NICKNAME,
+        ClientCodeTypeEnum.DIGITAL,
+    )
+)
+async def handle_generate_client_code(
     callback: types.CallbackQuery,
     organization_id: uuid.UUID,
     server_api: ServerAPI,
@@ -124,7 +129,11 @@ async def handle_generate_china_nickname_code(
         client = await server_api.client.generate_code(
             chat_id=callback.message.chat.id,
             organization_id=organization_id,
-            type_client_code=ClientCodeTypeEnum.CHINA_NICKNAME,
+            type_client_code=(
+                ClientCodeTypeEnum.CHINA_NICKNAME
+                if client.code == ClientCodeTypeEnum.CHINA_NICKNAME
+                else ClientCodeTypeEnum.DIGITAL
+            ),
         )
         if client:
             await callback.message.answer(
